@@ -22,7 +22,7 @@
 @c Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 @c %**start of header
-@setfilename eshell
+@setfilename eshell.info
 @settitle Eshell: The Emacs Shell
 @c %**end of header
 
