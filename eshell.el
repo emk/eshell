@@ -4,7 +4,7 @@
 ;;   2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 
 ;; Author: John Wiegley <johnw@gnu.org>
-;; Version: 2.4.2
+;; Version: 2.5
 ;; Keywords: processes
 
 ;; This file is part of GNU Emacs.
