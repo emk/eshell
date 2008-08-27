@@ -1,0 +1,937 @@
+-*- mode: text; outline-layout: (1 :) -*-
+
+This is the NEWS file for Eshell, a command shell written in Emacs
+Lisp.
+
+Please note that proper documentation is still on its way.
+
+* Changes in 2.4.2:
+
+** This is just a bug fix release, following 2.4.1 after about six
+   months.
+
+* Changes in 2.4:
+
+** Primarily a performance release, in addition to a few slight
+   changes in avaliable configuration variables:
+
+** There is a distinction made between "simple" and "complex"
+   functions.  Complex functions are likely to cause modifications to
+   the running Eshell command form, and thus require a form of
+   evaluation that simulates Scheme continuations.  This uses three
+   times as much memory as using plain `eval', which is entirely
+   sufficient for "simple" commands such as ls, cp, mv, etc.
+
+   NOTE: If you write a command named eshell/NAME, which must throw
+   either `eshell-defer' or `eshell-replace-command', you must add
+   NAME to `eshell-complex-commands'.
+
+** `ls' now uses `eshell-ls-exclude-hidden' to indicate that files
+   beginning with a dot should be excluded.
+
+** `eshell-glob-show-progress' is now nil by default, since it slows
+   down recursive glob processing so much.
+
+** ange-ftp is no longer required to compile Eshell, which broke
+   XEmacs users in 2.3.2.
+
+** `eshell-ls-initial-args' is new, and should be used instead of
+   command aliases to introduce a common argument (such as -h).
+
+** Command aliases and smart scrolling are both very slow and memory
+   consumptive, although not much can be done about this.  For
+   complicated commands that themselves run slowly, the percentile
+   impact is little.  But for quick, simple commands such as cd, ls,
+   etc., command aliases should definitely be avoided.  And while
+   smart scrolling (eshell-smart) is quite useful, it should be run on
+   fast machines to be fully appreciated.
+
+** The new option `eshell-stringify-t' determines whether Lisp `t'
+   should be rendered as `t', or not at all.  The truth of an
+   expression can still be determined using:
+
+     file-exists-p FILE && echo true
+
+** Added a new option `eshell-default-target-is-dot', which if non-nil
+   states that the default target of cp/mv/ln is the current
+   directory, which mirrors the behavior of most DOS shells.
+
+* Changes in 2.3.2:
+
+** More bug fixes.  Greatly improved remote directory support, since
+   now nearly all file attributes can be viewed.
+
+* Changes in 2.3.1:
+
+** This a bug fix release, in preparation for inclusion as part of
+   Emacs 21.
+
+** One little feature, however, did sneak in: C-c C-y in the Eshell
+   buffer will repeat the last argument entered.  With a numeric
+   prefix, it will repeat that many arguments.
+
+* Changes in 2.3:
+
+** The control flow commands: if, unless, while, until: now test the
+   exit code of external processes against 0 for truth, and the value
+   of Lisp forms against t.  Before, they would only check to see if
+   the test expression generated output.
+
+** Because the Elisp manual declares that C-c LETTER bindings be left
+   to the user, several of Eshell's command mode bindings had to be
+   changed.  The equivalences are:
+
+      2.2     2.3
+     -----   -------
+     C-c e   C-c M-v
+     C-c p   C-c M-i
+     C-c h   C-c M-o
+     C-c b   C-c M-b
+     C-c l   C-c M-l
+     C-c ?   C-c M-q,
+     C-c m   C-c M-m
+     C-c i   C-c M-h
+     
+** Added support for a ksh feature: "cd OLD NEW".  This will replace
+   OLD with NEW in the current directory name (the name returned by
+   `pwd' specifically), and then attempt to change to that directory.
+
+** Added a syntax convenience for short-circuited commands:
+
+     file-exists-p file.cpp && echo file exists
+     file-exists-p file.cpp || echo file does not exist
+
+   These operators test either the return code of the Lisp function on
+   the left-hand side (to determine if it's non-nil), or the exit code
+   of an external function (testing for 0), whichever is appropriate.
+
+   The precedence for these operators is lower than sequencing (;) and
+   backgrounding (&), but higher than redirection (>) and piping (|).
+   Within themselves, they are strictly left to right.  In this sense,
+   it acts on a chain of success and failure, continuing to the next
+   part of the chain only if the operator would allow it.
+
+** Added three new configuration variables:
+
+     eshell-mv-overwrite-files
+     eshell-cp-overwrite-files
+     eshell-ln-overwrite-files
+
+   The default for all three is t.  If nil, a --force argument (-f) is
+   required before any of the three commands will overwrite anything.
+   This is different from --interactive (-i), which queries before
+   destruction.
+
+* Changes in 2.2:
+
+** Added a "FEATURES" file to the distribution, which gives a brief
+   overview of the features offered by Eshell.
+
+** When `eshell-command' is invoked, the minibuffer is put into
+   eshell-mode, making all of your preferred Eshell keybindings
+   available (such as completion).
+
+   To bind M-! to use eshell-command, customize the variable
+   `eshell-prefer-to-shell'.
+
+** If both the `eshell-history' and `eshell-rebind' are in use, C-r
+   and C-s now behave similarly to bash.  In 2.1, it was necessary to
+   enter a full regexp in the minibuffer before searching would
+   begin.  Now it's incremental, using isearch.
+
+** All of the optional Eshell extension modules are now named
+   "em-NAME.el".  Required modules are named "esh-NAME.el".  This
+   prevents name collisions from occuring on filesystems with 8.3 name
+   limits.
+
+** New conditional constructs: if, unless, while and until.  They can
+   be used in any of the following fashions:
+
+     if (string-match "gumby" (system-name)) {
+  	echo true
+     } else {
+  	echo false
+     }
+
+     while {/sbin/ifconfig | egrep ppp0} {
+        echo connected via ppp
+     }
+
+** New ls option implemented: -I GLOB.  Used to exclude files matching
+   GLOB from the listing.
+
+** New list argument modifiers: (:i/REGEXP/) strips all elements not
+   matching REGEXP.  (:x/REGEXP/) strips all elements that do match
+   the REGEXP.  Other delimiters can also be used: (:i,REGEXP,).
+
+** Extended the file-time predicate, so that a file can be used as a
+   comparison basis.  Example: "ls *(a+'file.c')" displays files
+   accessed before "file.c" was last accessed.
+
+** The eshell-xtra extension module now offers some cl (Emacs Common
+   Lisp) convenience functions.  They make it much easier to perform
+   complex manipulations on list arguments.  Since glob patterns and
+   command substitutions both yield list values, they can be very
+   useful.  To enable eshell-xtra, customize the variable
+   `eshell-options-list'.
+
+     # Return results of glob, minus happy.el.  The same as:
+     #   *.el~happy.el
+
+     remove happy.el *.el
+
+     # Remove all duplicate lines from command results.  The same as:
+     #   egrep johnw /etc/passwd | uniq
+
+     remove-duplicates ${egrep johnw /etc/passwd}
+
+     # Replace a given list element with another.  The same as:
+     #   *.el(:s/em-ls\.el/happy.el/)
+
+     substitute happy.el em-ls.el *.el
+
+     # Return element value if member of a list.  This is roughly
+     # equivalent to:
+     #   echo *.el | egrep "^happy.el$" | uniq
+
+     find happy.el *.el
+
+     # Count the number of times a string appears in a list.
+     # Equivalent to:
+     #   echo *.el | egrep "^happy.el$" | wc -l
+
+     count happy.el *.el
+
+     # Combine two lists, eliminating duplicates.  Roughly equivalent
+     # to (difference is that the result is always sorted):
+     #   echo *.el e* | sort | uniq
+
+     union *.el e*
+
+     # Return overlapping members of two lists.  Roughly equivalent
+     # to:
+     #   comm -12 $<printnl *.el(:o:u)> $<printnl e*(:o:u)>
+
+     intersection *.el e*
+
+     # Return members unique to the first list.  Roughly equivalent
+     # to:
+     #   comm -23 $<printnl *.el(:o:u)> $<printnl e*(:o:u)>
+
+     set-difference *.el e*
+
+     # Return all members that don't overlap.  Roughly equivalent to:
+     #  append ${comm -23 $<printnl *.el(:o:u)> $<printnl e*(:o:u)>}
+     #         ${comm -13 $<printnl *.el(:o:u)> $<printnl e*(:o:u)>}
+     
+     set-exclusive-or *.el e*
+
+** cp and mv now support moving and copying of directories.  With mv,
+   this happens whenever a directory name is given as a source.  With
+   cp, it requires using either the -R or -a switch.
+
+   Please be careful when using these options.  A good backup policy
+   is always worth the trouble, and until Eshell has been in active
+   use for a few years, I wouldn't want to start moving directories
+   around without a backup.
+
+** Copying and moving directly TO a tar archive is allowed.  It
+   creates the archive if it doesn't exist, and updates it if it does
+   (removing the filesystem entries in the case of mv).  Note that
+   this happens only with multiple sources, or a single directory
+   source.
+
+   If the archive name ends in ".tgz", ".tz2", ".taz", ".taZ",
+   ".tar.gz", ".tar.bz2", or ".tar.Z", it will be
+   compressed/decompressed appropriately.  Using "-v" after the
+   command name also works, for displaying the filenames as they are
+   copied/moved:
+
+     cp -v some_dir some_dir.tar.bz2
+
+** Implemented `du' in Lisp.  If an external version of `du' is
+   present, it is always used instead, since the Lisp version is much
+   slower, and blocks Emacs while it's running.
+
+** Implemented `time' in Lisp.  It only displays elapsed wall-clock
+   time, since Emacs doesn't provide facilities for determining the
+   user/kernel time consumed by a subprocess.  Its usefulness lies in
+   the fact that it can show the elapsed time of Lisp function calls,
+   and it's available on all operating systems.
+
+** If a `grep' command is neither redirected, nor part of a command
+   pipeline, it's output will occur in a `*grep*' buffer, allowing the
+   user to use C-x ` to move to the source of each hit.  The applies
+   to the whole grep family: egrep, fgrep, agrep, and glimpse.
+
+   Disable by customizing `eshell-plain-grep-behavior'.
+
+** If a `diff' command is neither redirected, nor part of a command
+   pipeline -- and if diff-mode.el is loaded -- the command's output
+   will occur in a separate buffer in diff-mode, allowing the user to
+   use C-x ` to move to each source difference.
+
+   Disable by customizing `eshell-plain-diff-behavior'.
+
+** If a `locate' command is neither redirected, nor part of a command
+   pipeline -- and if diff-mode.el is loaded -- the command's output
+   will occur in a separate buffer in locate-mode.
+
+   Disable by customizing `eshell-plain-locate-behavior'.
+
+** If a `make' command is sent to the background and not redirected,
+   it's output will appear in a `*compilation*', allowing the user to
+   enter C-x ` to view the source of each error.
+
+** New list argument modifier ':u'.  This removes any contiguous
+   duplicate strings in the list.  Used after ':o', it's the same as
+   "sort | uniq".  Example:
+
+     echo **/*.c(:o:u)   # returns uniq'd list of all .c files
+
+** Arguments to `which' that are preceded by an asterix `*', will
+   bypass alias lookup.  This makes it possible to find out what the
+   alias will invoke.
+
+** Three new globbing constructs: #?, #* and #+, which correspond to
+   the ?, * and + regular expressions.  To show the correlation:
+
+     glob   regexp
+     ----   ------
+      *       .*
+      ?       .
+      #*      *
+      #+      +
+      #?      ?
+      ##      +      # zsh compatible
+      #       *      # zsh compatible
+
+** Changed the syntax of variable name quoting.  The new syntax is:
+
+     $VAR-NAME       # interpolate the value of `VAR-NAME'
+     $'VAR'-NAME     # interpolate `VAR', followed by "-NAME"
+     $"VAR"-NAME     # (same)
+     $"VA$VAR"-NAME  # interpolate `VAR' into "VA?", then interpolate
+  		       into "?-NAME".  This syntax can be nested.
+
+   Previously the argument "$<LOGNAME>-name" would have interpolated
+   the value of $LOGNAME into the argument, yielding something like
+   "johnw-name".
+
+** New syntax for temporary data interpolation.  Example:
+
+     xdu -n $<du -k>
+
+   This invokes the command "du -k", copies the result to a temp file,
+   then passes the name of that temp file as an argument to `xdu'.
+   Once `xdu' completes, the temp file is deleted.
+
+   This syntax is quite similar to "<{command}" in bash, except that
+   Emacs doesn't permit writing to named pipes.
+
+   This is also useful with commands that need multiple generated
+   inputs:
+
+     comm -23 $<cd ~/src; printnl **/*.c(:o:u)>   \
+              $<cd /usr/src; printl **/*.c(:o:u)>
+
+   This command will display all the .c files in "~/src" that are not
+   in "/usr/src", with `comm' the only external process invoked.
+
+** New commands: C-c ? and C-c m.  These two popup quick help buffers
+   showing the various glob predicate and argument modifier
+   characters.  All those characters were too easy to forget.
+
+** Using the '@' predicate with globs containing directories now
+   works.  Example: "ls -d *(^@)" (anywhere containing directories).
+
+** Corrected the behavior of "ls -L".
+
+** rm, cp, mv and ln now support "-i" (--interactive), which queries
+   before overwriting/deleting any files.  This is the default when
+   the user id is 0.
+
+** Line splitting in command result interpolation now works.  This
+   makes the following possible:
+
+     length {listify {egrep blah FILE}}
+
+   This invokes "egrep blah FILE", interpolating the result as a Lisp
+   list, with each element a line of the output.  The above command
+   will report how many hits were found.  Note that the `listify' is
+   required here, since if egrep finds only one match, it will return
+   it as a string, not a list.
+
+** New configuration variable `eshell-virtual-targets'.  Allows the
+   user to specify new virtual targets, such as "/dev/kill" and
+   "/dev/null".
+
+** New virtual target "/dev/eshell".  Anything output to this
+   pseudo-device will be displayed in the Eshell window as normal
+   output from the command.  Useful on operating systems without
+   "tee", since it lets you both view the command output, and redirect
+   it somewhere else:
+
+     ls > blah > /dev/eshell   ; output goes to both "blah" and display
+
+** New configuration variable `eshell-kill-processes-on-exit'.  It can
+   be set to one of: t, ask, every, nil.  These settings mean:
+
+   t     - kill all processes spawned by an Eshell buffer when it is
+           killed/exited.
+
+   ask   - same operation as t, but ask the user before doing so.
+
+   every - some operation as ask, but query for every single process.
+
+   nil   - don't kill processes on exit.  They will be killed only if
+           Emacs itself is killed, or if the user kills/exits them.
+           This is the default, and matches the behavior of 2.1.
+   
+** New configuration hook `eshell-first-time-mode-hook', which is
+   called at the same time as `eshell-mode-hook' (just before it), but
+   only once per Emacs session.
+
+** Added '#*' '.#*' files to the `eshell-ls-backup-regexp'.
+
+** Added '.bz2' files to the `eshell-ls-archive-regexp'.
+
+** The "echo" command now takes a "-n" flag, which causes it to
+   generate a newline after the printed text.
+
+** New module `esh-toggle', which provides the global commands
+   `eshell-toggle' and `eshell-toggle-cd'.
+
+To use these functions, simply type `M-x eshell-toggle'.  With a
+prefix argument, it is the same as calling `eshell-toggle-cd', which
+emits a "cd $default-directory" immediately after switching.
+
+If `eshell-toggle' is called once, it will bring up Eshell in another
+window.  If called twice in succession, it will take up the whole
+frame.  After doing anything in the Eshell buffer, calling
+`eshell-toggle' yet again will restore the window configuration that
+was extent before the first call.
+
+** Improved support for XEmacs 21.1 and 21.2.
+
+* Changes in 2.1:
+
+** Eshell has been split into several functional "modules".
+   There are base modules, which define the core of Eshell, and
+   extension modules, whose use is entirely optional.  See the
+   variable `eshell-modules-list'.
+
+** comint.el is no longer used.  The functionality that Eshell had been
+   using is now divided between eshell-mode.el, eshell-hist.el,
+   eshell-cmpl.el and eshell-io.el.  Most of that code is now
+   radically altered from its original form.
+
+** there is complete documentation available, using a prototype
+   embedded documentation system called "texidoc".  texidoc.el is
+   included with the distribution of Eshell, but is not yet ready for
+   general consumption.
+
+** pushd, popd and dirs are provided in the extension module
+   `eshell-dirs'.
+
+** `cd', as defined in the extension module `eshell-dirs', can accept
+   parent directory references of the form "...", where each
+   additional "." refers to the next highest directory.
+
+** recursive globbing, similar to zsh, is provided in the extension
+   module `eshell-glob'.  The syntax is "**/*.c", which means matches
+   all of the C files in the current directory and below.  Symbolic
+   links are not traversed.  To traverse them, use three asterices:
+   "***/*.c".
+
+** argument predicates and modifiers are provided in the extension
+   module `eshell-pred'.  The syntax is to suffix the argument with
+   "(PREDS)" or "(:MOD:MOD)", or any combination.  The allowable
+   predicates follow zsh syntax, whereas the allowable modifiers
+   follow bash's history argument modifier syntax.  Thus, the command
+   "echo alpha(:s/al/be/)" would yield the string "bepha".
+
+   The history code and globbing rely upon this extension module to
+   provide globbing predicates and history argument modifiers.  If it
+   is not used, those facilities won't be available.  See the Info
+   manual for a fuller description of predicates and modifiers, and
+   how to use them.  They are comprehensive enough to replace the use
+   of "find ... | xargs <cmd>" in most cases.
+
+** the version info banner displayed at login is part of a
+   sample extension module named `eshell-banner'.  It can be
+   de-selected by disabling the use of that module.  If authors choose
+   to write their on Eshell extension modules, they should copy this
+   file ("eshell-banner.el") as a starting point.
+
+** command aliases are provided in the extension module
+   `eshell-alias'.  These aliases are intended for simplicity, and
+   persist immediately (i.e., no customization of Lisp variable is
+   necesary in order to use them).  The only caveat, and difference
+   from other shells, is that argument expansion must always be
+   provided by specifying '$*' somewhere in the alias string.  A
+   typical use might be: "alias ll 'ls -l $*'"
+
+** argument parsing has complete changed in structure.  It is now much
+   easier for extension modules to extend the capability of the parser
+   for their own needs.  See `eshell-dirs' for an example, which
+   extends the parser to properly handle filenames beginning with a
+   tilde character, such as "cat ~johnw/.emacs".
+
+** several more UNIX commands are now implemented in Lisp, in the
+   extension module `eshell-unix': basename, cat, cp, date, dirname,
+   ln, man, mkdir, mv and rmdir.
+
+** the extension module `eshell-basic' defines some of the more basic
+   shell commands, which are typically builtins in most shells: echo,
+   umask, version, etc.
+
+** programmable, context-aware completion is available using the
+   extension module `eshell-cmpl'.  This is accomplished by taking
+   advantage of the functionality in the `pcomplete' module, which is
+   included with the standard Eshell distribution.
+
+** history code, which is almost entirely bash compatible, is provided
+   in the extension module `eshell-hist'.
+
+** rebinding of command keys while editing command input is provided
+   in the extension module `eshell-rebind'.  For example, this causes
+   C-u to delete the current input text, rather than act as the
+   universal argument prefix -- but only while editing command input.
+   This is done to make Eshell feel more like a standard system
+   shell.  Once the point moves away from the command input text (C-c
+   C-p is the typical way to do this), C-u takes on its normal
+   meaning.
+
+   The keys which get rebound, and their definition, are fully
+   customizable.
+
+** execution of Eshell scripts is provided in the extension module
+   `eshell-script'.  The interpretor should be named
+   "/usr/local/bin/eshell", which is not offered with this
+   release. Eshell itself can execute such scripts, however, since it
+   evaluates them within the currently running Emacs.
+
+** a new form of smart output display is provided in the extension
+   module `eshell-smart'.  See the Info manual for more details, since
+   an accurate description of what "smart" means in this case is
+   somewhat difficult to describe.
+
+** a test suite is now included with Eshell, which is runnable by
+   typing `M-x eshell-test'.  However, this test can only be run
+   against non-byte-compiled sources.  For efficiency sake, all of the
+   testing code is removed during byte-compilation.
+
+** a few other niceties, such as implementing `expr' in terms of the
+   calc package, or defining `make' to use compilation-mode whenever
+   the user invokes it asynchronously, are provided in the extension
+   module `eshell-xtra'.
+
+** cd now maintains its own "directory ring", which remembers the last
+   `eshell-last-dir-ring-size' places that Eshell has been to.  The
+   syntax is:
+
+     cd -       ; go to last location (swap top of ring and current)
+     cd -4      ; go to 4th from last location
+     cd =bcc    ; go to last location containing regexp "bcc"
+     cd =       ; show list of locations
+    
+   If `eshell-last-dir-unique' is non-nil, this ring will never contain
+   duplicate items.
+
+** if an alias command like "ls" doesn't recognize a specified option,
+   it will defer to the external version (searched for on the PATH).
+
+** improved the "history" alias to be more like bash; specifically,
+   there is support for the -r, -w and -a options.
+ 
+** removed all dependencies on font-lock.  eshell now does its own
+   buffer highlighting.
+
+** added full support for colorized ls output.  To disable this
+   feature, set `eshell-ls-use-colors' to nil.
+
+** fixed a bug which was causing filter overruns when using pipes
+   and processes that generate a lot of output (like "find" with
+   "xargs").
+
+** removed `eshell-ls-default-args'.  The proper way to pass default
+   arguments to ls is by using a command alias.
+
+** fixed a bug which prevented Eshell's ls from displaying very large
+   file sizes.
+
+* Changes in 1.5:
+
+** eshell now uses comint directly, rather than duplicating that
+   code.
+
+For this to work, you will need an updated copy of comint, which can
+no longer be found.
+
+** optimized handling of output from a subprocess.  In cases where
+   both standard output and standard error are both headed for the
+   "*eshell*" buffer (which is most of the time), the comint filter is
+   used directly, bypassing eshell's redirection code.
+
+** there is a new user variable, `eshell-visual-commands'.  If any
+   command name matches a member of this list, it will be executed
+   using "term", and started in a new buffer.  When that process exits
+   -- and if you were viewing that buffer at the time -- it will
+   return you to eshell.
+
+** fixed "/dev/null".  It now dumps output once again (before, it
+   would give an error about trying to change the value of the
+   constant symbol "nil").
+
+** fixed a problem with subcommands that was causing "echo
+   ${whoami}" not to work.
+
+** implemented a simple version of "history" that mimics the
+   behavior of bash's same command.  None of the command switches are
+   supported, however, nor can an alternate history file be specified.
+   Yet.
+
+** if `eshell-input-ring-file-name' is non-nil (and it now defaults
+   to "~/.history"), eshell will write out the current command history
+   whenever the eshell buffer is killed.
+
+** the "exit" alias will bury the eshell buffer; but it does not
+   kill it (for the time being, there are some problems with trying to
+   do that, while at the same time keep everything sane).
+
+** after a call to `eshell-print', the display is now refreshed --
+   with consquent result that some of the lisp functions are now
+   visibly slower, although you can at least now see that they're
+   doing something.  Setting `eshell-refresh-interval' to a higher
+   value will make the functions run faster, but it will also make
+   them seem a little choppier (no frequent updates).  Setting this to
+   a really high number will match the functionality of 1.4.
+
+** if a "foreground" process is active, pressing RETURN will send
+   the current string to that process; if there are multiple
+   foreground processes active, the user will be prompted for which
+   one.  Note that eshell echos locally, so the app you're using (such
+   as telnet) may have to turn echoing off.
+
+** executables are searched for along the PATH, not the `exec-path'.
+   Also, specifying a relative executable name now works (before,
+   saying "src/ls", even if it was there, would not work).
+
+** added an alias for "export" which behaves just as in bourne
+   shell.  That is, you can now add to the path by saying:
+
+     export PATH=$PATH:/usr/local/bin"
+
+** fixed a bug which made it impossible to say "echo $exec-path",
+   and was causing $_ to be inaccessible.
+
+** "ls -l" (the alias version, written in Lisp) now shows symbolic
+   link targets.  "ls -r" correctly reverses the file list.  "ls -t"
+   sorts by mod time.  Ganging up options ("ls -ltr") now also works.
+
+** before calling start-process, use `expand-file-name' on the
+   program name, so that relative paths are seen as absolute
+
+** looking up the command interpretor got broken again in 1.4
+
+** fixed problem where you couldn't cd to a directory with a numeric
+   name
+
+** `eshell-kill-alias' was reversing its arguments, so that "kill -9
+   PROC" wasn't working.
+
+** fixed a problem in `eshell-argument-syntax-list', that was
+   causing process references (e.g., #<process ispell>) to cause a
+   syntax error.
+
+** if output continues to generate from a subprocess, and you move
+   point to another window or frame, eshell will now scroll to the end
+   of the buffer.  In 1.4, it would freeze the point of display at the
+   location you were last at when leaving the window.
+
+** protected a reference to `transient-mark-mode' with a call to
+   `boundp', in case it's not bound yet.
+
+** "date" now calls (current-time-string).  If you want the other
+   functions of the date command, call it with an explicit path, such
+   as /bin/date.  In the future, I'll make "date" an alias, and just
+   call the real "date" if the alias doesn't recognize any of the
+   command line switches.
+
+** beyond these features and bugs, there were several other, smaller
+   bugs fixed.  Thanks to everyone who submitted feedback, and
+   provided test cases.  Most everything else on my TODO list is
+   either a major bug, requiring redesign, or a new feature.
+
+* Changes in 1.4
+
+** `eshell-funcalln' was incorrectly calling `eshell-apply' rather
+   than `eshell-applyn'.
+
+** Pipes and subcommands were totally broken by the rewrite of the
+   output handling code.  And subcommands were even changing the main
+   eshell buffer!  So that's all working again.
+
+** Always go the end of the current line when RETURN is pressed.
+
+** Fixed a serious problem with globbing patterns and disk commands.
+
+** Process interaction, when there is only one non-background
+   process active, now works as expected again.
+
+* Changes in 1.3
+
+** The variable `eshell-cd-shows-directory' now control whether
+   "cd" will report the directory name it changes to.
+
+** The "alias" command didn't even really work, but now it's
+   fixed.
+
+** Removed dependency on `dired-replace-in-string' and
+   `dired-glob-regexp'.
+
+** If a variable is not found, it's value evaluates to "".  If a
+   command cannot be found, it prints "name not found", as rc does
+   (rc: the Other Shell [read like 'the Other Woman'] :).
+
+** "ls" has been implemented in Lisp.  Remove it from the list of
+   aliases if you still want to use the disk-based version.  If there
+   are flags which my implementation does not recognize, it will
+   revert to the disk based version.
+
+** "rm" has been implemented to call the Lisp function
+   `delete-file'.  If the argument is a buffer or process, it will
+    kill it.  If it is a symbol, it will delete it.
+
+** If `cd' is given an ange-ftp file name, and then a disk
+   command is run from that directory, eshell will call
+   `shell-command' so that the command is run via "rsh" on the remote
+   machine.
+
+** Command aliases take a new second argument which allows you
+   specify what kind of alias you're defining.  So it's now possible
+   to define an alias as '("ll" command "ls -l").
+
+** The history and input handling code was copied directly over from
+   comint, rather than being reimplemented.  The only changes I had to
+   make were due to the fact that comint assumes that the current
+   buffer always has exactly one underlying process associated with
+   it.  So although it's ugly to block move that much code, rather
+   than just reuse it in place, at least for this version eshell
+   supports comint's code for history and input navigation:
+
+*** !! accesses last command
+
+*** !command searches for last command, with option of command
+    being a ;; regexp
+
+*** !?<TAB> causes the current line to be replaced with that
+    history ;; element
+
+*** M-p M-n walk through the history list
+
+*** If RETURN is pressed at a previous location in the eshell
+    buffer (i.e., before `eshell-output-mark'), repeat the command
+    text at the bottom before executing it.
+
+*** Note: numerical references to history sub-elements are
+    currently ignored.
+
+* Changes in 1.2
+
+** Fixed some bugs with list flattening, `eshell-echo' and
+   `eshell-dos-to-unix'.
+
+** Removed "grep" alias.  Too troublesome and confusing.
+
+** Giving a prefix argument to C-RET (send string to process),
+   will cause Emacs to read the input as a password.  Also, a newline
+   is now automatically appended to the string sent.
+
+** Fixed many bugs dealing with aliases and foreign command
+   interpretors.  How did all those bugs creep in?  :)
+
+** The "dos2unix" alias no longer untabifies your files.
+
+** Added aliases for "setq" and "if".  More to come...
+
+** Added some bindings to provide some compatibility with what
+   comint users expect.
+
+** Accessing history is now possible with "!command".  The last
+   command is available using "!!".  If `eshell-history-by-regexp' is
+   non-nil, you can use "!regexp", which will match anywhere with the
+   line, requiring "!^regexp" to emulate the default behavior.
+
+** "cd -" will return to the last directory visited.
+
+** Variable referencing is now supported.  It takes many forms:
+
+*** $VARIABLE      name of an environment or Lisp variable
+
+*** $ALSO-VAR      "-" is considered part of a name
+
+*** $<MYVAR>-TOO   only "MYVAR" is part of the variable name
+
+*** $#VARIABLE     length of the value of VARIABLE
+
+*** $(lisp)
+
+Returns result of lisp evaluation.  Note: Used alone like this, it is
+identical to just saying (lisp); but with the variable expansion form,
+the result may be interpolated a larger string, like "$(lisp)/other".
+
+*** ${command}
+
+Returns the value of an eshell subcommand.  See the note above
+regarding lisp evaluations.  The same applies here.
+
+*** $ANYVAR[10]
+
+Attempts to return the 10th element of ANYVAR.  If ANYVAR's value is a
+string, it will be split in order to make it a list.  The splitting
+will occur at whitespace.
+
+*** $ANYVAR[: 10]
+
+Just like above, except that splitting occurs at the colon now.
+
+*** $ANYVAR[: 10 20 ]
+
+Like above, but instead of returning just a string, it now returns a
+list of two elements.  If the result is being interpolated into a
+larger string, this list will be flattened into one big string, with
+each element separated by a space.
+
+*** $ANYVAR["\\\\" 10]
+
+Separate on backslash characters.  Actually, the first argument -- if
+it doesn't have the form of a number, or plain variable name -- is
+just a regular expression.  So if you did want to split on numbers,
+you could say:
+
+  $ANYVAR["[0-9]+" 10 20].
+
+*** $ANYVAR[hello]
+
+Does an assoc with ANYVAR, expecting it to be an alist.
+
+*** $#ANYVAR[hello]
+
+Returns the length of the element of the alist ANYVAR who car is equal
+to "hello"
+
+*** Thus, you can now do crazy things like:
+
+  1+ ${egrep johnw /etc/passwd}[: $pu-index] > 'uid-after-me
+
+And return the value of the `pu-index'th element of your passwd entry
+(let's assuming it's set to 2, the user id), increment it by one, and
+then store this integer in the Lisp variable `uid-after-me'.
+
+** $_ is defined (via an alias) as the arguments for the last
+   command.  If referenced plainly, it refers to the last argument of
+   the last argument.  If referenced as an array, it will return the
+   Nth argument of the last command.
+
+* Changes in 1.1
+
+** Fixed a bug which made some of the defcustom forms unusable.
+
+** `esh' is an alias for `eshell-subcommand', making it easier to
+   run eshell commands synchronously from lisp forms.
+
+** Fixed some erroneous ways that files were being separated and
+   globbed.  Failed globs get passed as the glob string.
+
+** Special characters in filenames are now quoted when doing name
+   completion.
+
+** Eshell outputs a short banner message on startup, announcing the
+   version.  Set `eshell-display-banner-p' to nil to turn this off.
+
+** Removed the troublesome global variables that were being used
+   for capturing the output from the subcommands.
+
+** Outputting to 'nil, or the pseudo-name "/dev/null", will drop
+   output.
+
+** Using ";;" means three empty commands now, instead of the
+   unknown token ";;".
+
+** The process interaction functions, such as C-c C-c, now always
+   use the currently running sub-process if eshell has invoked only
+   one.  Otherwise, it prompts from among all running processes in
+   Emacs.
+
+** Changed C-c RET to just C-RET.
+
+** Emacs-lisp-mode is run before switching the major mode to
+   eshell, so that any hooks (like starting eldoc mode) work as you
+   would expect for a lisp mode.
+
+* Changes in 1.0 (from the first pre-release version 0.2)
+
+** Simplified the code a great deal, and broke it down into several
+   more functions.
+
+** Now uses `dired-glob-regexp', instead of duplicating that code.
+
+** Redirection is possible to multiple targets.  They will all
+   receive the same output.
+
+** Redirection of files, buffers or processes, using the Emacs
+   syntax #<buffer NAME> or #<process NAME>.  If
+   `eshell-buffer-shorthand' is nil, you can even redirect into a lisp
+   variable using the syntax: 'name.
+
+** If you redirect within a pipe, the output will still go to the
+   pipe, eliminating the need for "tee".  To prevent this behavior,
+   set `eshell-always-to-pipe' to nil.
+
+** When redirecting to a buffer, the operator ">>>" will cause the
+   redirection to insert at the current location of point in that
+   buffer.  Beware of the asynchronous nature of the subprocess,
+   though, since it will continue inserting at point, even if point
+   moves around.
+
+** ~, ~user, and /:/path (to prevent environment variable
+   substitution) are now supported.
+
+** You can turn off the bogus nature of "&" by setting
+   `eshell-support-ampersand' to nil.
+
+** There is now extensive support for aliases, and redefinition of
+   commands.
+
+You can either replace the definition of a command, or alter it.  You
+can also modify the output which comes from the command, and still
+have it show up in all the places the user specified redirections to.
+
+** Synchronous subcommands are supported, and can be used either to
+   generate output, or to substitute for an argument.
+
+The syntax used is similar to rc, except that no whitespace is allowed
+after the initial brace.  This is so that users can avoid the tedium
+of quoting all the time.
+
+  echo {cd; ls}      ; echos contents of home directory
+  echo {+ 1 3}       ; print `t', since sub-expr yields non-nil
+  {+ 1 3}            ; evalute in a subcommand, and print result
+
+** Synchronous chaining of commands is supported, using ";":
+
+  ls; ls -l; ls; ls -l     ; appears in the order you expect
+
+** There is a series of functions behind C-c now, for the purposes
+   of interrupting processes.
+
+** You can use C-c p and C-c b to insert named references to
+   process and buffers.
+
+** When a subprocess asks a question, you cannot answer it just by
+   typing into the eshell buffer, since there's no way to know for
+   certain which asynchronous subprocess you intend for the string to
+   go to.  Instead, use C-c RET, select the name of the process, and
+   then enter your string in the minibuffer.
