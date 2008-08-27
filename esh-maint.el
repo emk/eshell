@@ -41,13 +41,13 @@
   (require 'cl)
   (setq cl-optimize-speed 9))
 
-;; (defun eshell-generate-autoloads ()
-;;   (interactive)
-;;   (require 'autoload)
-;;   (setq generated-autoload-file
-;;	(expand-file-name (car command-line-args-left)))
-;;   (setq command-line-args-left (cdr command-line-args-left))
-;;   (batch-update-autoloads))
+(defun eshell-generate-autoloads ()
+  (interactive)
+  (require 'autoload)
+  (setq generated-autoload-file
+	(expand-file-name (car command-line-args-left)))
+  (setq command-line-args-left (cdr command-line-args-left))
+  (batch-update-autoloads))
 
 (require 'eshell)
 (require 'esh-mode)    ; brings in eshell-util
