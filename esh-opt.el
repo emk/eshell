@@ -193,7 +193,7 @@ switch is unrecognized."
 	  (setq extcmd (eshell-search-path (cadr extcmd)))
 	  (if extcmd
 	      (throw 'eshell-ext-command extcmd)
-	    (if (characterp switch)
+	    (if (char-valid-p switch)
 		(error "%s: unrecognized option -%c" name switch)
 	      (error "%s: unrecognized option --%s" name switch))))))))
 
