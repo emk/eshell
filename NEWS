@@ -5,6 +5,12 @@ Lisp.
 
 Please note that proper documentation is still on its way.
 
+* Changes in 2.5:
+
+** This is a maintenance release, which includes all the changes
+   which have occurred in in the Emacs code base since Eshell was
+   included there.
+
 * Changes in 2.4.2:
 
 ** This is just a bug fix release, following 2.4.1 after about six

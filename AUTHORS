@@ -1,0 +1,33 @@
+Eshell was created by John Wiegley <johnw@newartisans.com> around April of
+1999, when he was confined to working on Windows NT machines and wanted a
+better eshell to work with -- all without having to leave the comforts of
+Emacs.
+
+Many people have contributed to Eshell since then.  Below are just some of the
+names that appear in the version control log; those others who helped during
+its very inception have been lost to time.
+
+A special thanks, however, goes to Lee Cantey, who was my office time during
+the time of Eshell's furious construction.  :-) We had many fun lunches were
+he patiently listened to all of my new ideas as they were being born.
+
+John
+
+Andreas Schwab
+Chong Yidong
+Colin Walters
+Dan Nicolaescu
+Dave Love
+Deepak Goel
+Eli Zaretskii
+Gerd Möllmann
+John Wiegley
+Juanma Barranquero
+Juri Linkov
+Kai Großjohann
+Michael Kifer
+Miles Bader
+Richard Stallman
+Stefan Monnier
+Thien-Thi Nguyen
+Vinicius Jose Latorre

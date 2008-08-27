@@ -1,0 +1,146 @@
+Welcome to the Emacs Shell
+
+[Note: This README is also available in Japanese; see README.ja]
+
+Eshell is a command shell implemented entirely in Emacs Lisp. It invokes no
+external processes beyond those requested by the user. It is intended to be a
+functional replacement for command shells such as bash, zsh, rc, 4dos; since
+Emacs itself is capable of handling most of the tasks accomplished by such
+tools.
+
+Despite the sheer fact that running an Emacs shell can be fun, here are a few
+of the unique features offered by Eshell. More are documented in greater
+detail under EshellFeatures.
+
+# Integration with the Emacs Lisp programming environment
+
+The ability to have the same shell on every system Emacs has been ported
+to. Since Eshell imposes no external requirements, and relies upon only the
+Lisp functions exposed by Emacs, it is quite operating system
+independent. Several of the common UNIX commands, such as ls, mv, rm, ln,
+etc., have been implemented in Lisp in order to provide a more consistent work
+environment.
+
+For those who might be using an older version of Eshell, version 2.1
+represents an entirely new, module-based architecture. It supports most of the
+features offered by modern shells. Here is a brief list of some of its more
+visible features:
+
+ - Command argument completion (tcsh, zsh)
+ - Input history management (bash)
+ - Intelligent output scrolling
+ - Psuedo-devices (such as "/dev/clip" for copying to the clipboard)
+ - Extended globbing (zsh)
+ - Argument and globbing predication (zsh)
+ - I/O redirection to buffers, files, symbols, processes, etc.
+ - Many niceties otherwise seen only in 4DOS
+ - Alias functions, both Lisp and Eshell-syntax
+ - Piping, sequenced commands, background jobs, etc...
+
+Eshell was designed to run on Emacs 20.4 or higher, and XEmacs 21.1 or
+higher. It was tested on GNU/Linux, Windows NT 4.0, and Windows 2000.
+
+If you try to run Eshell on other versions of Emacs, here are some common
+problems you may run into, and how to overcome them:
+
+Emacs 20.3: Pcomplete fails to byte compile. Instead of typing "make install"
+in the Pcomplete directory, type: "make pcmpl-auto.el install_el". Then, copy
+the file "pcmpl-auto.el" into the directory that pcomplete was just installed
+into. Why this is failing is a mystery to me. It appears that byte-compiling
+pcomplete from a running Emacs session works just fine.
+
+To start using Eshell, add the following to your .emacs file:
+
+    (load "eshell-auto")
+
+This will define all of the necessary autoloads.
+
+Now type `M-x eshell`. See the INSTALL file for full installation
+instructions.
+
+# Philosophy
+
+A shell is a layer which metaphorically surrounds the kernel, or heart of an
+operating system. This kernel can be seen as an engine of pure functionality,
+waiting to serve, while the user programs take advantage of that functionality
+to accomplish their purpose.
+
+The shell's role is to make that functionality accessible to the user in an
+unformed state. Very roughly, it associates kernel functionality with textual
+commands, allowing the user to interact with the operating system via
+linguistic constructs. Process invocation is perhaps the most significant form
+this takes, using the kernel's fork and exec functions.
+
+Other programs also interact with the functionality of the kernel, but these
+user applications typically offer a specific range of functionality, and thus
+are not classed as "shells" proper. (What they lose in quiddity, they gain in
+rigidity).
+
+Emacs is also a user application, but it does make the functionality of the
+kernel accessible through an interpreted language -- namely, Lisp. For that
+reason, there is little preventing Emacs from serving the same role as a
+modern shell. It too can manipulate the kernel in an unpredetermined way to
+cause system changes. All it's missing is the shell-ish linguistic model.
+
+Enter Eshell. Eshell translates "shell-like" syntax into Lisp in order to
+exercise the kernel in the same manner as typical system shells. There is a
+fundamental difference here, however, although it may seem subtle at first...
+
+Shells like csh and Bourne shell were written several decades ago, in
+different times, under more restrictive circumstances. This confined
+perspective shows itself in the paradigm used by nearly all command-line
+shells since. They are linear in conception, byte stream-based, sequential,
+and confined to movement within a single host machine.
+
+Emacs, on the other hand, is more than just a limited translator that can
+invoke subprocesses and redirect file handles. It also manages character
+buffers, windowing frames, network connections, registers, bookmarks,
+processes, etc. In other words, it's a very multi-dimensional environment,
+within which eshell emulates a highly linear methodology.
+
+Taking a moment, let's look at how this could affect the future of a shell
+allowed to develop in such a wider field of play:
+
+There is no reason why directory movement should be linear, and confined to a
+single file-system. Emacs, through w3 and ange-ftp, has access to the entire
+Web. Why not allow a user to cd to multiple directories simultaneously, for
+example? It might make some tasks easier, such as diff'ing files separated by
+very long pathnames.  Data sources are available from anywhere Emacs can
+derive information from: not just from files or the output of other processes.
+Multiple shell invocations all share the same environment -- even the same
+process list! It would be possible to have "process views", so that one buffer
+is watching standard output, another standard error, and another the result of
+standard output grep'd through a regular expression...  It is not necessary to
+"leave" the shell, losing all input and output history, environment variables,
+directory stack, etc. Emacs could save the contents of your eshell
+environment, and restore all of it (or at least as much as possible) each time
+you restart. This could occur automatically, without requiring complex
+initialization scripts.  Typos occur all of the time; many of them are repeats
+of common errors, such as dri for dir. Since executing non-existent programs
+is rarely the intention of the user, eshell could prompt for the replacement
+string, and then record that in a database of known misspellings. (Note: The
+typo at the beginning of this paragraph wasn't discovered until two months
+after I wrote the text; it was not intentional).  Emacs' register and
+bookmarking facilities can be used for remembering where you've been, and what
+you've seen -- to varying levels of persistence. They could perhaps even be
+tied to specific "moments" during eshell execution, which would include the
+environment at that time, as well as other variables. Although this would
+require functionality orthogonal to Emacs' own bookmarking facilities, the
+interface used could be made to operate very similarly.  This presents a brief
+idea of what the fuller dimensionality of an Emacs shell could offer. It's not
+just the language of a shell that determines how it's used, but also the
+Weltanschauung underlying its design -- and which is felt behind even the
+smallest feature. I would hope the freedom provided by using Emacs as a parent
+environment will invite rich ideas from others. It certainly feels as though
+all I've done so far is to tie down the horse, so to speak, so that he will
+run at a man's pace.
+
+The author of Eshell has been a long-time user of the following shells, all of
+which contributed to Eshell's design:
+
+ - rc
+ - bash
+ - zsh
+ - sh
+ - 4nt
+ - csh

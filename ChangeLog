@@ -1,0 +1,1405 @@
+2008-08-15  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-cmd.el (eshell-do-pipelines): Indicate the last command in
+	a pipeline.
+	* eshell/em-ls.el (eshell-ls-files): List one per line in a pipeline,
+	unless at the end of the pipeline.  (Bug#699).
+
+2008-08-13  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-cmd.el (eshell/which): Handle the case where no description
+	is found.
+
+2008-07-18  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-arg.el (eshell-quote-backslash): Restrict previous change
+	to XEmacs, since it does nothing for Emacs.
+
+2008-07-17  Fan Kai  <fktpp@xemacs.org>  (tiny change)
+
+	* eshell/esh-arg.el (eshell-quote-backslash): Fix eshell path completion
+	for Windows.
+
+2008-07-03  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/esh-arg.el (eshell-quote-backslash): Fix typo in docstring.
+	(eshell-parse-argument-hook, eshell-special-chars-inside-quoting)
+	(eshell-arg-load-hook, eshell-special-chars-outside-quoting):
+	Remove spurious * in defcustom docstrings.
+
+2008-06-25  Stefan Monnier  <monnier@iro.umontreal.ca>
+
+	* eshell/esh-cmd.el (eshell-manipulate): Check eshell-debug-command
+	is bound before using it.
+
+2008-06-20  Eli Zaretskii  <eliz@gnu.org>
+
+	* makefile.w32-in (distclean): Depend on `clean'.
+	(clean): Delete calc/calc-loaddefs.el~ and eshell/esh-groups.el~.
+	(AUTOGENEL): Add $(lisp)/nxml/subdirs.el.
+	($(lisp)/cus-load.el): Don't use `touch'.  Instead, generate an
+	empty cus-load.el with `echo', and include "Local Variables"
+	section to prevent the empty file from being compiled.
+	(cus-load.el-SH, cus-load.el-CMD): New SHELLTYPE-specific targets
+	that generate an empty cus-load.el.
+
+2008-06-07  Glenn Morris  <rgm@gnu.org>
+
+	* ediff-merg.el, strokes.el, wid-edit.el, emacs-lisp/lisp-mnt.el:
+	* emulation/edt-mapper.el, eshell/em-dirs.el, eshell/em-glob.el:
+	* eshell/em-ls.el, eshell/em-unix.el, eshell/esh-cmd.el:
+	* eshell/esh-io.el, eshell/esh-opt.el, eshell/esh-test.el:
+	* eshell/esh-util.el, international/mule-cmds.el:
+	Remove unnecessary eval-when-compiles and eval-and-compiles.
+
+2008-05-21  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-module.el: No need for cl when compiling.
+
+	* eshell/eshell.el (eshell-defgroup): New alias.
+	* eshell/em-alias.el, eshell/em-banner.el, eshell/em-basic.el:
+	* eshell/em-cmpl.el, eshell/em-dirs.el, eshell/em-glob.el:
+	* eshell/em-hist.el, eshell/em-ls.el, eshell/em-pred.el:
+	* eshell/em-prompt.el, eshell/em-rebind.el, eshell/em-script.el:
+	* eshell/em-smart.el, eshell/em-term.el, eshell/em-unix.el:
+	* eshell/em-xtra.el: Use eshell-defgroup rather than defgroup.
+	Autoload the custom group.  Set generated-autoload-file.
+	* eshell/em-basic.el, eshell/esh-module.el: Require eshell,
+	for eshell-defgroup.
+	* eshell/esh-module.el (eshell-load-defgroups): Remove.
+	Require esh-groups rather than loading it.
+
+2008-05-08  Juanma Barranquero  <lekktu@gmail.com>
+
+	* abbrev.el (define-abbrev-table):
+	* eshell/em-smart.el (eshell-review-quick-commands):
+	Don't use `iff' in docstrings.
+
+2008-02-01  Dave Love  <fx@gnu.org>
+
+	* eshell/esh-opt.el (eshell-process-option):
+	* disp-table.el (standard-display-default): Use characterp.
+
+2008-02-01  Kenichi Handa  <handa@etl.go.jp>
+
+	* eshell/esh-mode.el: Adjust for the change of map-char-table.
+
+2007-12-05  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/em-alias.el (pcomplete-stub): Define for compiler.
+	(pcomplete-here): Autoload it.
+
+	* eshell/em-basic.el (print-func): No need to define for compiler.
+
+	* eshell/esh-cmd.el (eshell-debug-command):
+	* eshell/esh-io.el (eshell-print): Move definitions before use.
+
+	* eshell/esh-module.el (eshell-load-defgroups): Eval and compile.
+
+	* eshell/esh-util.el (top-level): Don't require pp.
+	Use condition-case rather than ignore-errors.
+
+	* eshell/eshell.el (eshell-buffer-name): Define for compiler.
+
+	* eshell/em-alias.el, eshell/em-banner.el, eshell/em-basic.el
+	* eshell/em-cmpl.el, eshell/em-dirs.el, eshell/em-glob.el
+	* eshell/em-hist.el, eshell/em-ls.el, eshell/em-pred.el
+	* eshell/em-prompt.el, eshell/em-rebind.el, eshell/em-script.el
+	* eshell/em-smart.el, eshell/em-term.el, eshell/em-unix.el
+	* eshell/em-xtra.el, eshell/esh-cmd.el, eshell/esh-test.el
+	* eshell/esh-util.el, eshell/eshell.el: Require individual files
+	if needed when compiling, rather than esh-maint.  Collect any
+	require statements.  Move provide statement to end.  Move any
+	commentary to start.
+
+	* eshell/esh-arg.el, eshell/esh-ext.el, eshell/esh-io.el:
+	* eshell/esh-mode.el, eshell/esh-module.el, eshell/esh-opt.el:
+	* eshell/esh-proc.el, eshell/esh-var.el:
+	Require individual files if needed when compiling, rather than
+	esh-maint.  Collect any require statements.  Leave provide at start.
+	Move any commentary to start.
+
+2007-11-28  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-util.el (top-level): Use require rather than load for
+	ange-ftp.
+
+2007-11-27  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/eshell.el (eshell-report-bug): Add version number of
+	obsolescence.
+
+2007-11-25  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-maint.el (top-level): Use require with NOERROR for
+	pcomplete.  Don't mess with load-path.
+
+	* eshell/eshell.el (eshell-report-bug-address): Remove.
+	(eshell-report-bug): Redefine as an alias for report-emacs-bug.
+
+2007-11-24  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/eshell.el: Remove leading `*' from defcustom doc-strings.
+	(esh-mode): Require it.
+	(esh-util): Use require rather than featurep and load.
+	(eshell): No need to test if eshell-mode is bound; remove obsolete
+	reference to eshell-auto.
+	(eshell-command, eshell-command-result): Don't require esh-mode
+	now that the file does.
+	(top-level): Move provide statement to the end of the file.
+	Re-order and update commentary.
+
+2007-11-17  Dan Nicolaescu  <dann@ics.uci.edu>
+
+	* eshell/esh-util.el (eshell-under-xemacs-p): Remove.
+	* eshell/esh-mode.el (eshell-mode-syntax-table, command-running-p):
+	* eshell/esh-ext.el (eshell-external-command):
+	* eshell/esh-cmd.el (require):
+	* eshell/em-unix.el (eshell-plain-locate-behavior):
+	* eshell/em-cmpl.el (eshell-cmpl-initialize):
+	Replace eshell-under-xemacs-p with (featurep 'xemacs).
+	* eshell/esh-mode.el (characterp, char-int): Remove unused
+	conditional defaliases.
+
+2007-11-17  Eli Zaretskii  <eliz@gnu.org>
+
+	* eshell/esh-module.el (eshell-load-defgroups): Don't make backups
+	when saving esh-groups.el.
+
+2007-11-15  Juanma Barranquero  <lekktu@gmail.com>
+
+	* ediff-wind.el (ediff-window-setup-function):
+	* eshell/em-unix.el (eshell/info):
+	Fix typos in docstrings.
+
+2007-11-08  David Hansen  <david.hansen@gmx.net>  (tiny change)
+
+	* eshell/em-dirs.el (eshell-expand-multiple-dots): Change regexp to
+	match dir like "a...b".
+
+2007-11-07  David Hansen  <david.hansen@gmx.net>
+
+	* eshell/em-glob.el (eshell-extended-glob): Sort matches.
+
+2007-11-07  Johan Bockgård  <bojohan@gnu.org>
+
+	* eshell/esh-mode.el (eshell-output-filter):
+	* eshell/esh-proc.el (eshell-insertion-filter, eshell-sentinel):
+	Use `with-current-buffer'.
+
+2007-10-30  Michael Albinus  <michael.albinus@gmx.de>
+
+	* net/tramp-cache.el (tramp-flush-file-function): Check also
+	`default-directory' if `buffer-file-name' does not return a
+	string.  Added to `eshell-pre-command-hook'.
+
+2007-10-26  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/em-unix.el (nil-blank-string): Doc fix.
+
+2007-10-26  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-unix.el (eshell/diff): Before calling the `diff'
+	function, ensure that the third argument is turned into a nil if
+	the string is otherwise completely empty (either no characters, or
+	all tabs/spaces).  This fixes a bug from a user who found himself
+	unable to customize `diff-switches' and still use Eshell's diff
+	command.
+
+2007-10-21  Dan Nicolaescu  <dann@ics.uci.edu>
+
+	* eshell/esh-mode.el (eshell-handle-ansi-color):
+	Require ansi-color at compile time too.
+
+	* eshell/em-unix.el (eshell/info): Require info at compile time too.
+
+2007-10-17  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-cmd.el (eshell-complex-commands): Add "ls".
+
+2007-09-21  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/esh-mode.el (eshell-output-filter-functions):
+	Add eshell-postoutput-scroll-to-bottom.
+
+2007-09-02  Glenn Morris  <rgm@gnu.org>
+
+	* eshell/em-unix.el (eshell/time): Stringify and flatten the
+	non-command arguments.
+
+2007-08-31  James Wright  <james@chumsley.org>
+
+	* eshell/em-unix.el (eshell/info): New function.
+
+2007-08-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	* eshell/esh-opt.el (eshell-eval-using-options):
+	Add debug declaration.
+
+2007-03-30  Chong Yidong  <cyd@stupidchicken.com>
+
+	* eshell/esh-proc.el (eshell/kill): Tweak regexp to recognize
+	SIGUSR1 and SIGUSR2.
+
+2007-03-12  Mark A. Hershberger  <mah@everybody.org>
+
+	* eshell/esh-mode.el (eshell-handle-ansi-color): New function.
+	Add customize option.
+
+2007-01-29  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/esh-cmd.el (eshell-rewrite-for-command):
+	Fix typos in docstrings (some suggested by Chris Moore).
+
+2006-08-10  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-glob.el (eshell-glob-chars-list)
+	(eshell-glob-translate-alist): Add support for [^g] in character globs.
+
+2006-03-11  Richard Stallman  <rms@gnu.org>
+
+	* eshell/eshell.el (eshell-prefer-to-shell): Variable deleted;
+	the way it is implemented is too unclean.
+
+2005-11-01  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-ls.el (eshell-do-ls): Add no-op support for --dired
+	flag, to prevent Eshell from using the system ls when
+	`eshell-ls-insert-directory' is in used.
+	(eshell-ls-insert-directory): Disable font-lock in directory
+	buffer so that Eshell's own fontification is seen.  This broke
+	recently due to changes in font-lock, so this goes back to version
+	21 behavior.
+
+2005-10-16  Masatake YAMATO  <jet@gyve.org>
+
+	* eshell/em-hist.el (eshell-list-history): Ditto.
+
+2005-09-18  Deepak Goel  <deego@gnufans.org>
+
+	* textmodes/reftex-index.el (reftex-index-change-entry)
+	(reftex-index-phrase-selection-or-word, reftex-query-index-phrase):
+	* eshell/esh-proc.el (eshell-remove-process-entry):
+	Fix `message' calls to ensure first arg is a format string.
+	The change was made only when these two conditions were satisfied:
+	[1] when there is a possibility that the arguments would cause an error
+	for example, if the code in question relies on external variables
+	such as filenames, and
+	[2] if the arg to `message' could not have been nil in the code.
+
+2005-08-27  Eli Zaretskii  <eliz@gnu.org>
+
+	* eshell/esh-ext.el (eshell-windows-shell-file): Look for
+	command.com, not command.exe.
+
+2005-08-26  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-cmd.el (eshell-rewrite-named-command): Change the
+	code around a bit so that an extraneous nil argument is not added
+	to a command when no args are given.
+
+	* eshell/esh-arg.el (eshell-parse-double-quote): If a
+	double-quoted argument resolves to nil, return it as an empty
+	string rather than as nil.  This made it impossible to pass "" to
+	a shell script as a null string argument.
+
+2005-08-09  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/eshell.el (eshell): Avoid warnings about eshell-mode.
+
+2005-07-21  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/em-ls.el (eshell-ls-decorated-name): Doc fix.
+	(eshell-ls-missing, eshell-ls-dired-initial-args)
+	(eshell-ls-use-in-dired): Fix typos in docstrings.
+
+2005-07-16  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/em-hist.el (eshell-rebind-keys-alist): Add defvar.
+	(eshell-hist-initialize): Use that var the natural way.
+
+2005-07-04  Juanma Barranquero  <lekktu@gmail.com>
+
+	* emacs-lisp/cl-indent.el (lisp-indent-maximum-backtracking):
+	* eshell/esh-var.el (eshell-var):
+	* textmodes/org.el (org): Fix typos in docstrings.
+
+2005-06-17  Miles Bader  <miles@gnu.org>
+
+	* eshell/esh-test.el (eshell-test-ok, eshell-test-failed):
+	Remove "-face" suffix from face names.
+	(eshell-test-ok-face, eshell-test-failed-face):
+	New backward-compatibility aliases for renamed faces.
+	(eshell-run-test): Use renamed eshell-test faces.
+
+	* eshell/em-prompt.el (eshell-prompt): Remove "-face" suffix from
+	face name.
+	(eshell-prompt-face): New backward-compatibility alias for renamed
+	face.
+	(eshell-emit-prompt): Use renamed eshell-prompt face.
+
+	* eshell/em-ls.el (eshell-ls-directory, eshell-ls-symlink)
+	(eshell-ls-executable, eshell-ls-readonly, eshell-ls-unreadable)
+	(eshell-ls-special, eshell-ls-missing, eshell-ls-archive)
+	(eshell-ls-backup, eshell-ls-product, eshell-ls-clutter):
+	Remove "-face" suffix from face names.
+	(eshell-ls-directory-face, eshell-ls-symlink-face)
+	(eshell-ls-executable-face, eshell-ls-readonly-face)
+	(eshell-ls-unreadable-face, eshell-ls-special-face)
+	(eshell-ls-missing-face, eshell-ls-archive-face)
+	(eshell-ls-backup-face, eshell-ls-product-face)
+	(eshell-ls-clutter-face):
+	New backward-compatibility aliases for renamed faces.
+	(eshell-ls-decorated-name): Use renamed eshell-ls faces.
+
+2005-06-16  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/esh-mode.el (eshell-preinput-scroll-to-bottom):
+	Fix spellings in docstrings.
+
+2005-06-14  Juanma Barranquero  <lekktu@gmail.com>
+
+	* eshell/esh-var.el (eshell/export):
+	* textmodes/flyspell.el (flyspell-incorrect-hook)
+	(flyspell-maybe-correct-transposition)
+	(flyspell-maybe-correct-doubling): Fix quoting in docstring.
+
+2005-05-30  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-cmpl.el, eshell/em-dirs.el, eshell/em-glob.el
+	* eshell/em-unix.el, eshell/esh-ext.el, eshell/esh-io.el
+	* eshell/esh-util.el, eshell/esh-var.el: Change all uses of
+	`directory-sep-char' to ?/, and all uses of `string-to-int' to
+	`string-to-number'.
+
+2005-05-26  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-cmd.el (eshell-eval-command): If the return value of
+	`eshell-resume-eval' is wrapped in a list, it indicates that the
+	command was run asynchronously.  In that case, unwrap the value
+	before checking the delimiter value.
+
+	* eshell/em-cmpl.el (eshell-complete-parse-arguments): If the
+	character before a space at the end of a line is \, assume the space
+	is part of the last argument rather than a final argument separator.
+
+	* eshell/esh-io.el (eshell-get-target): If `eshell-buffer-shorthand'
+	is in use, and the target is `t' or `nil' (which are the most common
+	values), don't assume that the symbol target is a buffer.
+
+2005-05-26  Lute Kamstra  <lute@gnu.org>
+
+	* arc-mode.el (archive-mode):
+	* eshell/esh-mode.el (eshell-mode):
+	Use run-mode-hooks.
+
+2005-05-14  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/esh-mode.el (eshell-find-tag): Use with-no-warnings.
+
+2005-05-12  Andreas Schwab  <schwab@suse.de>
+
+	* eshell/esh-mode.el (eshell-send-input): Doc fix.
+
+2005-03-25  Werner Lemberg  <wl@gnu.org>
+
+	* eshell/esh-io.el, eshell/esh-var.el:
+	Replace `illegal' with `invalid'.
+
+2004-12-28  Matt Hodges  <MPHodges@member.fsf.org>
+
+	* eshell/em-hist.el (eshell-previous-matching-input):
+	Start the deletion from the end of the output.
+
+2004-12-27  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/esh-cmd.el (eshell-find-alias-function):
+	Call symbol-file with `defun'.
+
+	* eshell/esh-test.el (eshell-test-goto-func):
+	Call symbol-file with `defun'.
+
+2004-11-04  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/esh-mode.el (eshell-show-maximum-output):
+	Don't use interactive-p.
+	(eshell-truncate-buffer): Just message, no error, if buffer is short.
+
+2004-10-27  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/em-unix.el (eshell-du-sum-directory): Don't use
+	directory-sep-char.
+
+2004-10-19  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/em-unix.el (eshell-grep):
+	Don't bind compilation-process-setup-function.
+
+2004-09-20  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/esh-ext.el (eshell-explicit-command-char): Doc fix.
+
+2004-09-04  Matt Hodges  <matt@stchem.bham.ac.uk>  (tiny change)
+
+	* eshell/em-pred.el (eshell-predicate-help-string): Doc fix.
+	Support choosing seconds with "s".
+
+2004-06-10  Miles Bader  <miles@gnu.ai.mit.edu>
+
+	* eshell/esh-module.el (eshell-load-defgroups):
+	Bind `vc-handled-backends' to nil when opening files.
+
+2004-06-06  Emilio C. Lopes  <eclig@gmx.net>
+
+	* eshell/esh-cmd.el (eshell/which): Respect commands quoted with
+	eshell-explicit-command-char.
+
+2004-05-15  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-io.el (eshell-get-target): Whitespace changes.
+	(eshell-output-object-to-target): Improve output speed 20% by not
+	calling `eshell-stringify' if something is already known to be a
+	string.
+
+2004-05-13  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-test.el (eshell-test): Call the function
+	`emacs-version' rather than trying to build a custom version string.
+
+2004-05-08  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-glob.el (eshell-glob-initialize): Move initialization
+	of `eshell-glob-chars-regexp' into `eshell-glob-regexp', so that
+	function can be used outside of eshell buffers.
+	(eshell-glob-regexp): Initialize `eshell-glob-chars-regexp' here.
+
+2004-04-27  Kevin Ryde  <user42@zip.com.au>
+
+	* eshell/em-alias.el:
+	* eshell/em-dirs.el:
+	* eshell/em-hist.el:
+	* eshell/em-unix.el: Add "(require 'eshell)", to get necessary
+	features when M-x customize-group loads modules before the main
+	eshell.el.
+
+2004-03-25  Juri Linkov  <juri@jurta.org>
+
+	* eshell/eshell.el (eshell): Fix broken info-link.
+
+	* eshell/em-alias.el (eshell-alias, eshell-bad-command-tolerance):
+	* eshell/em-banner.el (eshell-banner):
+	* eshell/em-smart.el (eshell-smart):
+	* eshell/esh-cmd.el (eshell-cmd):
+	Comment out broken info-links to incomplete Info manual.
+
+2004-03-01  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/em-smart.el (eshell-smart-maybe-jump-to-end): Fix typo in
+	docstring.
+
+2004-02-20  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-pred.el (eshell-modifier-alist): Change the "eval
+	again" modifier from 'e' to 'E', since 'e' is also used by the
+	"file extension" modifier.
+
+2004-02-08  Andreas Schwab  <schwab@suse.de>
+
+	* eshell/esh-mode.el (eshell-send-invisible): Fix format string.
+
+	* eshell/em-hist.el (eshell-hist-word-reference): Fix format string.
+
+2003-11-16  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-ls.el (eshell-ls-file): There are times with
+	size-width is nil and uncomputed (when directories are created in
+	dired, for example); in this case, 4 is reasonable default value,
+	although it may caused skewed new entries (which could be avoided
+	by returning the original value of 8 in all cases, but 99% of the
+	time this is a waste of whitespace).
+
+2003-11-16  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/em-ls.el (eshell-ls-file): Instead of making the size
+	field in a long-listing always 8 characters, use `size-width',
+	which has already been computed.
+
+2003-11-14  John Wiegley  <johnw@newartisans.com>
+
+	* eshell/esh-var.el (eshell-parse-variable-ref): Add a backslash
+	that was optional, but obviously missing based on surrounding code.
+
+	* eshell/esh-cmd.el (eshell-lisp-command): Do not late-convert
+	string arguments to numbers unless the whole argument was seen as
+	a number.
+
+2003-06-22  Andreas Schwab  <schwab@suse.de>
+
+	* eshell/esh-opt.el (eshell-do-opt): Avoid variable as format
+	argument for error.
+
+2003-03-26  Steve Youngs  <youngs@xemacs.org>
+
+	* em-unix.el (eshell-plain-locate-behavior): Make the default
+	nil on Emacs, t on XEmacs.
+
+2003-01-27  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/esh-cmd.el (eshell-separate-commands): Likewise.
+
+2003-01-15  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-hist.el (eshell-save-history-on-exit):
+	Rename `eshell-ask-to-save-history' to `eshell-save-history-on-exit',
+	because the former name is somewhat unrelated to the variables'
+	possible values.
+
+2002-12-07  Andreas Schwab  <schwab@suse.de>
+
+	* eshell/em-ls.el (eshell-ls-product-regexp): Fix typo.
+
+2002-11-29  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/em-script.el: Require eshell.
+
+	* eshell/esh-ext.el, eshell/em-cmpl.el: Require esh-util.
+
+2002-11-07  Stefan Monnier  <monnier@cs.yale.edu>
+
+	* eshell/esh-cmd.el (function-p-func): Avoid `xemacs-p'.
+
+	* eshell/em-glob.el: Require esh-util.
+	(eshell-glob-initialize): Don't assume
+	eshell-special-chars-outside-quoting is available.
+
+2002-10-22  Bob Halley  <halley@play-bow.org>  (tiny change)
+
+	* eshell/esh-io.el (eshell-set-output-handle): Fix so that
+	multiple redirection can work.
+
+2002-10-21  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/esh-util.el (directory-files-and-attributes): Copy docstring
+	from Emacs 21.  Arg DIR renamed to DIRECTORY for consistency.
+
+2002-10-17  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/esh-var.el (eshell/define): Likewise.
+
+2002-10-01  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/esh-module.el (eshell-load-defgroups):
+	Add "no-byte-compile: t" to subdirs.el.
+
+	* eshell/esh-maint.el:
+	* term/wyse50.el: Add "no-byte-compile: t" in first line.
+
+2002-09-24  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/em-unix.el (eshell-occur-mode-mouse-goto)
+	(eshell-poor-mans-grep): Remove references to `occur-buffer'.
+
+2002-04-09  John Wiegley  <johnw@gnu.org>
+
+	* esh-util.el: Removed eshell-under-cygwin-p, and all uses of it.
+	* em-cmpl.el (eshell-cmpl-ignore-case): Ditto.
+	* em-dirs.el (eshell/cd): Ditto.
+	* em-glob.el (eshell-glob-case-insensitive): Ditto.
+	* em-hist.el (eshell-previous-matching-input-string-position): Ditto.
+	* esh-ext.el (eshell-binary-suffixes): Ditto.
+
+2002-04-09  John Paul Wallington  <jpw@shootybangbang.com>
+
+	* esh-util.el (eshell-under-cygwin-p): New function.
+	* em-cmpl.el (eshell-cmpl-ignore-case): Use it.
+	* em-dirs.el (eshell/cd): Ditto.
+	* em-glob.el (eshell-glob-case-insensitive): Ditto.
+	* em-hist.el (eshell-previous-matching-input-string-position): Ditto.
+	* esh-ext.el (eshell-binary-suffixes): Ditto.
+
+2002-07-26  Kai Großjohann  <Kai.Grossjohann@CS.Uni-Dortmund.DE>
+
+	* eshell/eshell.el (eshell): Numeric prefix arg means to switch
+	to the session with that number.  Old behavior still available
+	with nonumeric prefix args.
+
+2002-06-18  Juanma Barranquero  <lektu@terra.es>
+
+	* eshell/em-pred.el (eshell-modifier-help-string): Fix typos.
+
+2002-06-10  Richard M. Stallman  <rms@gnu.org>
+
+	* eshell/em-unix.el (eshell/diff): Use copy-sequence.
+
+	* eshell/esh-mode.el (eshell-mode, eshell-mode): Use copy-sequence.
+
+	* eshell/esh-util.el (eshell-copy-list): Function deleted.
+	(eshell-sublist): Use copy-sequence.
+	(eshell-copy-tree): Make it an alias for copy-tree.
+
+2002-05-03  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-var.el (eshell-modify-global-environment): Added this
+	customization variable, which will cause any "export" commands
+	within any eshell buffer to modify the global Emacs environment.
+	It defaults to nil, which means that such commands will only
+	modify that Eshell buffer's environment.
+	(eshell-var-initialize): Initialize `eshell-modify-global-environment'.
+
+	* eshell/em-cmpl.el (eshell-command-completions-alist):
+	Improve default completion targets for objdump, nm and readelf.
+
+2002-04-12  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-ext.el (eshell-script-interpreter): Fix for CRLF
+	operating systems to the regexp used to detect a script's interpreter.
+
+2002-04-01  Stefan Monnier  <monnier@cs.yale.edu>
+
+	* eshell/.cvsignore: New file.
+
+	* eshell/esh-groups.el: Remove.
+
+2002-03-18  Stefan Monnier  <monnier@cs.yale.edu>
+
+	* eshell/esh-ext.el (eshell-binary-suffixes): Use exec-suffixes.
+
+2002-02-28  Colin Walters  <walters@verbum.org>
+
+	* eshell/esh-var.el (eshell-parse-variable-ref): Use `make-temp-file'.
+
+2002-02-16  Pavel Janík  <Pavel@Janik.cz>
+
+	* eshell/em-alias.el (eshell-alias-initialize): Do not use
+	make-local-hook.
+
+	* eshell/em-cmpl.el (eshell-cmpl-initialize): Likewise.
+
+	* eshell/em-dirs.el (eshell-dirs-initialize): Likewise.
+
+	* eshell/em-glob.el (eshell-glob-initialize): Likewise.
+
+	* eshell/em-hist.el (eshell-hist-initialize): Likewise.
+
+	* eshell/em-pred.el (eshell-pred-initialize): Likewise.
+
+	* eshell/em-prompt.el (eshell-prompt-initialize): Likewise.
+
+	* eshell/em-rebind.el (eshell-rebind-initialize): Likewise.
+
+	* eshell/em-smart.el (eshell-smart-initialize): Likewise.
+
+	* eshell/em-unix.el (eshell-unix-initialize): Likewise.
+
+	* eshell/esh-cmd.el (eshell-cmd-initialize): Likewise.
+
+	* eshell/esh-ext.el (eshell-ext-initialize): Likewise.
+
+	* eshell/esh-io.el (eshell-io-initialize): Likewise.
+
+	* eshell/esh-mode.el (eshell-mode): Likewise.
+
+	* eshell/esh-test.el (eshell-show-usage-metrics): Likewise.
+
+	* eshell/esh-var.el (eshell-var-initialize): Likewise.
+
+2002-02-16  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-hist.el (eshell-hist-initialize): When in the
+	minibuffer, use the global value of `eshell-history-ring', and
+	never save it to disk, or ask to save it to disk.  This allows
+	users of session.el to control whether its global state should be
+	persisted or not.
+	(eshell-add-command-to-history): Don't write Eshell's history out
+	to disk, let the governing mode control that upon exit.
+
+2002-02-16  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/eshell.el (eshell-command): Before reading from the
+	minibuffer, add eshell-add-command-to-history to
+	minibuffer-exit-hook, and remove it after read-from-minibuffer
+	returns.
+
+	* eshell/em-hist.el (eshell-add-input-to-history): New function,
+	with most of the code from eshell-add-to-history.
+	(eshell-add-command-to-history): New function, to record in
+	eshell-history the commands run via eshell-command.
+	(eshell-add-to-history): Call eshell-add-command-to-history to do
+	most of the work.
+
+2002-02-16  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-ext.el (eshell-external-command): Added a fix for
+	XEmacs' new dired.el, which adds a global entry in the
+	`file-name-handler-alist'.
+
+2002-02-16  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-ext.el (eshell-script-interpreter): Allow whitespace
+	after the #! of a shell interpretor specification.
+
+2002-01-26  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/esh-cmd.el (eshell-eval-command): If eshell-resume-eval
+	returns t, don't treat that as an error.
+
+2001-12-31  Richard M. Stallman  <rms@gnu.org>
+
+	* comint.el, cus-edit.el, diff-mode.el, enriched.el, font-lock.el:
+	* emulation/viper-init.el, eshell/em-ls.el, progmodes/antlr-mode.el:
+	Adapt face definitions to use :weight and :slant.
+
+2001-10-17  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-unix.el (eshell/cat): Do a quick test if something is
+	a regular file, before checking if it is a directory or symlink.
+	This avoids a call to eshell-file-attributes, which can be
+	expensive in some situations.
+
+	* eshell/em-ls.el (eshell-ls-dired-initial-args): Added an extra
+	customization variable, to differentiate ls-in-dired from regular
+	uses of ls.
+
+2001-09-14  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/em-unix.el (eshell-shuffle-files, eshell-shuffle-files):
+	Use `equal', not `=', since the device number can be a cons cell.
+
+2001-09-10  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/em-unix.el (eshell-shuffle-files): Compare inodes with
+	`equal' instead of `=', since they can be cons cells.  From Nils
+	Goesche <cartan@cartan.de>.
+
+2001-07-16  Gerd Moellmann  <gerd@gnu.org>
+
+	* eshell/esh-mode.el (eshell-send-invisible): Renamed from
+	send-invisible, which is already defined in Comint.
+	(eshell-watch-for-password-prompt): Use it.
+
+2001-07-15  Pavel Janík  <Pavel@Janik.cz>
+
+	* eshell/em-alias.el, eshell/em-banner.el, eshell/em-basic.el,
+	* eshell/em-cmpl.el, eshell/em-dirs.el, eshell/em-glob.el,
+	* eshell/em-hist.el, eshell/em-ls.el, eshell/em-pred.el,
+	* eshell/em-prompt.el, eshell/em-rebind.el, eshell/em-script.el,
+	* eshell/em-smart.el, eshell/em-term.el, eshell/em-unix.el,
+	* eshell/em-xtra.el, eshell/esh-arg.el, eshell/esh-cmd.el,
+	* eshell/esh-ext.el, eshell/esh-io.el, eshell/esh-maint.el,
+	* eshell/esh-mode.el, eshell/esh-module.el, eshell/esh-opt.el,
+	* eshell/esh-proc.el, eshell/esh-test.el, eshell/esh-util.el,
+	* eshell/esh-var.el, eshell/eshell.el: Some fixes to follow coding
+	conventions in Elisp files.
+
+2001-06-19  John Wiegley  <johnw@gnu.org>
+
+	* eshell/eshell.el: Don't load in esh-util if it's already loaded.
+	Also, added a comment describing how to greatly speedup Eshell
+	loadup time, by concatenating together all of Eshell's .elc files.
+
+2001-06-19  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-mode.el: Disabled a test that often yields false failures.
+
+2001-06-09  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-cmd.el (eshell-exit-success-p): Use a string-match to
+	test if the last command was Lisp or not.
+	(eshell-rewrite-if-command): "if" syntax is "if A B C", not "if A
+	B x C".
+
+2001-05-18  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-ext.el (eshell-explicit-command-char): A new
+	configuration variable, which determines the initial character
+	that forces use of an external version of a command.  The default
+	is *, but may be set to \, for example.
+
+	* eshell/esh-ext.el (eshell-explicit-command):
+	Use `eshell-explicit-command-char' instead of ?*.
+
+	* eshell/esh-cmd.el (eshell/which):
+	Use `eshell-explicit-command-char' instead of ?*.
+
+	* eshell/em-cmpl.el (eshell-completion-command-name)
+	(eshell-complete-commands-list): Use `eshell-explicit-command-char'
+	instead of ?*.
+
+2001-05-09  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el (eshell-convert-numeric-arguments):
+	Annotated the documentation string to tell users about
+	`eshell-no-numeric-conversions'.
+
+	* eshell/esh-cmd.el (eshell-lisp-command): Don't perform numeric
+	conversions if a Lisp function has the property
+	`eshell-no-numeric-conversions' set to a non-nil value.
+
+	* eshell/em-dirs.el, eshell/em-ls.el, eshell/em-script.el,
+	eshell/em-unix.el, eshell/esh-ext.el, eshell/esh-cmd.el: Set the
+	property `eshell-no-numeric-conversions' on the following
+	functions (which all deal with filesystem entities, and never Lisp
+	numerical values): eshell/cd, eshell/pushd, eshell/popd,
+	eshell/ls, eshell/source, eshell/., eshell/man, eshell/rm,
+	eshell/mkdir, eshell/rmdir, eshell/mv, eshell/cp, eshell/ln,
+	eshell/cat, eshell/make, eshell/diff, eshell/locate, eshell/occur,
+	eshell/which, eshell/addpath.
+
+2001-05-09  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-arg.el (eshell-parse-argument-hook): If a number is
+	encountered as an argument, don't convert it right away, but tag
+	the first character of the string with the text properties
+	`number', which signifies to `eshell-lisp-command' that the
+	argument should be passed through `string-to-number' if it is
+	actually used in the call to a Lisp function.
+
+	* eshell/esh-cmd.el (eshell-lisp-command): Before calling a Lisp
+	function, convert any string arguments that have been tagged as
+	"numbers", by calling string-to-number.
+
+	* eshell/esh-util.el (eshell-number-regexp): Now that number
+	conversions only happen for Lisp function calls, the number regexp
+	should now match all integer and floating point forms.
+
+	* eshell/esh-proc.el: Disable `eshell-stop-process' and
+	`eshell-continue-process', since they are both nonfunctional at
+	the moment.
+	(eshell-proc-initialize): Don't bind keys for
+	`eshell-stop-process' or `eshell-continue-process'.
+
+	* eshell/em-unix.el (eshell-shuffle-files):
+	Apply `directory-file-name' before calling `file-name-directory'.
+
+	* eshell/em-hist.el (eshell-add-to-history): Reference to
+	`eshell-history-ring' needed to be `eshell-history-index'.
+
+2001-04-24  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-cmd.el (eshell-find-alias-function): Corrected the
+	fix from last night, since it wasn't finding eshell/cd.
+
+2001-04-23  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-unix.el (eshell/diff): Fixed problems that were
+	occurring with Emacs 21's diff.el/compile.el interaction layer.
+
+2001-04-23  Colin Walters  <walters@cis.ohio-state.edu>
+
+	* eshell/esh-cmd.el (eshell-find-alias-function): Return t in the
+	case where the function was defined in a file, but not part of an
+	eshell module.
+
+2001-04-23  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-smart.el (eshell-smart-redisplay): Added some safety
+	code to work around a redisplay problem I've been having.
+
+2001-04-23  John Wiegley  <johnw@gnu.org>
+
+	* eshell/eshell.el (eshell-command): Made a few changes so that
+	`eshell-command' could be called programmatically.
+
+	* eshell/esh-mode.el (eshell-non-interactive-p): Moved to eshell.el.
+
+	* eshell/eshell.el (eshell-non-interactive-p): Moved from esh-mode.el.
+
+2001-04-11  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-ls.el (eshell-ls-insert-directory):
+	Set font-lock-defaults to nil, to prevent fontification in dired
+	buffers, if Eshell's ls is being used.
+
+2001-04-11  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-alias.el (eshell-command-aliased-p): `assoc' was
+	required where `member' was being used.
+
+2001-04-11  Colin Walters  <walters@cis.ohio-state.edu>
+
+	* eshell/em-hist.el (eshell-previous-matching-input):
+	Don't display "History item" if the minibuffer is active.
+
+2001-04-10  Colin Walters  <walters@cis.ohio-state.edu>
+
+	* eshell/eshell.el (eshell-command): Needed a "%s" format
+	specifier, in case the buffer contains percent characters.
+
+2001-02-08  Dave Love  <fx@gnu.org>
+
+	* eshell/em-rebind.el (eshell-cannot-leave-input-list):
+	Remove `backward-line'.
+
+	* eshell/esh-mode.el (eshell-skip-prompt-function):
+	* progmodes/ada-mode.el (ada-popup-key): Fix :type.
+
+2001-01-29  Dave Love  <fx@gnu.org>
+
+	* eshell/esh-ext.el (eshell-windows-shell-file): Fix :type.
+
+	* eshell/em-ls.el (eshell-ls-exclude-regexp): Fix :type.
+
+2001-01-25  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el (eshell-ange-ls-uids): Changed use of `alist'
+	to `repeat' in the :type field.
+
+	* eshell/em-unix.el (eshell/occur): Fixed bug causing `occur' (as
+	a command) to always fail.
+
+2001-01-10  Dave Love  <fx@gnu.org>
+
+	* eshell/esh-util.el (eshell-ange-ls-uids): Fix :type.
+
+2000-10-28  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-mode.el (window-height test): Make certain that
+	`eshell-stringify-t' is non-nil.
+	(eshell-password-prompt-regexp): Changed to a much simpler
+	password regexp.
+	(eshell-send-input): If `eshell-invoke-directly' returns t,
+	directly invoke the parsed command using `eval'.  This improves
+	turn-around time on simple commands by a factor of three or
+	greater, such as cd, ls, pwd, etc. -- which get used very often.
+	It also conserves thousands of cons cells per call (since
+	`eshell-do-eval' consumes memory like a Cookie Monster set loose
+	in the Pacific Cookie Company).
+
+	* eshell/esh-test.el (eshell-test): Whitespace fix.
+
+	* eshell/em-ls.el (eshell-ls-insert-directory):
+	Make `eshell-ls-initial-args' nil when inserting directory contents.
+
+	* eshell/em-script.el (eshell-script-initialize): Add names to
+	`eshell-complex-commands, since `source' and `.' are complex.
+
+	* eshell/esh-cmd.el (eshell-rewrite-for-command)
+	(eshell-rewrite-while-command): Use `eshell-protect' instead of
+	`eshell-copy-handles'.
+	(eshell-rewrite-if-command): Use `eshell-protect' to wrap the call
+	bodies.
+	(eshell-separate-commands): Whitespace fix.
+	(eshell-complex-commands): Added a new list of names, for
+	determining whether a given command is as simple as it looks.
+	(eshell-invoke-directly): New function.  Returns t if a command
+	should be invoked directly (using `eval'), rather than indirectly
+	using `eshell-do-eval'.
+	(eshell-do-eval): Whitespace fix.
+
+	* eshell/em-unix.el (eshell-default-target-is-dot): New variable,
+	which provides an emulation of the DOS shell behavior of assuming
+	that cp/mv/ln should copy/move/link to the current directory.
+	(eshell-remove-entries): Added a doc string.
+	(eshell-shuffle-files): Removed the check for `target' being null.
+	(eshell-mvcp-template, eshell-mvcpln-template): Renamed
+	`eshell-mvcp-template' to `eshell-mvcpln-template', and extended
+	it to do a smarter check of whether a destination was provided.
+	(eshell/mv, eshell/cp): Enable `:preserve-args'.
+	(eshell/ln): Enable `:preserve-args', and use
+	`eshell-mvcpln-template' to implement the body of the function.
+	(eshell/cat, eshell/make, eshell-poor-mans-grep, eshell-grep)
+	(eshell/du, eshell/diff, eshell/locate): Stringify the argument
+	list after flattening it.  This makes it possible to cat files
+	with numerical names.
+	(eshell-unix-initialize): Added several names to
+	`eshell-complex-commands.
+	(eshell-unix-command-complex-p): Return t if a given command name
+	may result in external processes being invoked.
+
+	* eshell/em-glob.el (eshell-glob-show-progress): Make this
+	variable nil by default, since it slows down glob processing by a
+	factor of two or more, and increases memory consumption.
+
+	* eshell/em-smart.el: Added a note about how memory consumptive
+	smart display mode can be (at least this is true in Emacs 21).
+	(eshell-smart-initialize): Whitespace fix.
+	(eshell-refresh-windows): Use `if' instead of `when'.
+	(eshell-smart-scroll-window): Calling `save-current-buffer' was
+	not necessary.
+	(eshell-currently-handling-window): Added a missing global variable.
+
+	* eshell/em-ls.el (eshell-do-ls): Code simplification.
+	(eshell-ls-sort-entries, eshell-ls-entries, eshell-ls-dir):
+	Whitespace fix.
+	(eshell-ls-exclude-hidden): Added this variable in addition to
+	`eshell-ls-exclude-regexp'.  This one prevents files beginning
+	with . from even being read, which can improve memory consumption
+	quite a bit.
+	(eshell-ls-dir): If `eshell-ls-exclude-hidden' is non-nil, do not
+	read file entries beginning with a dot.  In home directories with
+	lots of hidden files, fully two-thirds of the time spent in ls is
+	used to read directory entries that are immediately thrown away.
+	(eshell-ls-initial-args): Added back this configuration variable,
+	for specifying default initial arguments to every call to ls.
+	Much faster than using an alias to do the same thing.
+	(eshell-do-ls): Use `eshell-ls-initial-args', if set.
+	(eshell-ls-dir): Whitespace change.
+
+	* eshell/em-dirs.el (eshell/pwd): Small code simplification.
+
+	* eshell/esh-util.el: Don't require `ange-ftp' if it's not available.
+	(eshell-stringify-t): Added a customization variable, to indicate
+	whether `t' should be rendered as a string at all.  If not, one
+	can still determine if the result of an expression is true using
+	"file-exists-p FILE && echo true".
+	(eshell-stringify): If `eshell-stringify-t' is nil, don't
+	stringify t!
+
+	* eshell/esh-module.el: Whitespace fix.
+
+	* eshell/em-alias.el (eshell-alias-initialize):
+	Added `eshell-command-aliased-p' to `eshell-complex-commands'.
+	(eshell-command-aliased-p): New function that returns t if a
+	command name names an aliased.
+
+2000-10-29  Michael Kifer  <kifer@cs.sunysb.edu>
+
+	Use viper-preserve-cursor-color.
+	Many functions changed to use viper= instead of = when comparing
+	characters.
+	* viper-util.el (viper-memq-char,viper=): New functions for
+	working with characters.
+	(viper-change-cursor-color): Fixed buglet.
+	Many functions changed to use viper= instead of = when comparing
+	characters.
+	* viper.el (viper-insert-state-mode-list): Added eshell.
+
+2000-10-23  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* info.el (Info-file-list-for-emacs): Add an entry for Eshell.
+
+2000-10-16  Gerd Moellmann  <gerd@gnu.org>
+
+	* eshell/esh-var.el, eshell/esh-util.el, eshell/esh-test.el,
+	* eshell/esh-proc.el, eshell/esh-opt.el, eshell/esh-mode.el,
+	* eshell/esh-maint.el, eshell/esh-io.el, eshell/esh-ext.el,
+	* eshell/esh-cmd.el, eshell/esh-arg.el, eshell/em-xtra.el,
+	* eshell/em-unix.el, eshell/em-term.el, eshell/em-smart.el,
+	* eshell/em-script.el, eshell/em-rebind.el, eshell/em-prompt.el,
+	* eshell/em-pred.el, eshell/em-ls.el, eshell/em-hist.el,
+	* eshell/em-glob.el, shell/em-dirs.el, eshell/em-cmpl.el,
+	* eshell/em-basic.el, eshell/em-banner.el, eshell/em-alias.el:
+	Add author information.
+
+2000-10-15  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/em-unix.el (eshell-du-prefer-over-ange): Doc fix.
+
+2000-10-13  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el (require): Added a missing `require' form,
+	needed when compiling (for an ange-ftp macro definition).
+
+2000-10-13  John Wiegley  <johnw@gnu.org>
+
+	* align.el, pcomplete.el, calendar/timeclock.el,
+	eshell/esh-module.el, eshell/eshell.el: Removed URL reference.
+
+2000-10-13  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el: Added a global form which declares an
+	autoload for `parse-time-string', if that function is not already
+	defined, and if parse-time.el is available on the user's system.
+
+	* eshell/em-ls.el (eshell-ls-applicable): Extended this function
+	to be aware of ange-ftp user info.
+	(eshell-do-ls): Bind `ange-cache'.  Also, use `eshell-file-attributes'.
+	(eshell-ls-annotate): Use `eshell-file-attributes'.
+	(eshell-ls-file): Made the user-id printing code a bit smarter.
+
+	* eshell/esh-util.el (eshell-ange-ls-uids): Added variable, to
+	allow identification of alias user ids in remote directories.
+	It's manual, but there's no other way to know when the current user
+	on the local machine, is also the owning user on the remote machine.
+	(fboundp): Bind `ange-cache'.
+	(eshell-directory-files-and-attributes): Re-organized the logic a
+	bit to use `eshell-file-attributes' instead of `file-attributes'.
+	The former is more sensitive to directories that are read via FTP,
+	and knows how to use ange-ftp to determine full attribute
+	information, instead of just the name and last modtime.
+	(eshell-current-ange-uids): Return the current user id when in a
+	remote directory.
+	(eshell-parse-ange-ls): Parse a full directory listing that has
+	been returned by ange-ftp.
+	(eshell-file-attributes): This beefed up version of
+	`file-attributes' is only special if the user is currently in a
+	remote directory, in which case it does a lot of work to find out
+	what the real attributes of a file are, as they appear on the
+	remote machine.  This makes usage of remote directories (i.e.,
+	ange-ftp pathnames) much more useful.  You can now use Eshell as a
+	full-fledged FTP client, with much more manipulation ability than
+	most other clients.
+
+	* eshell/em-unix.el (eshell-du-prefer-over-ange): Added a new
+	variable, which means that Eshell's du should always be preferred
+	in remote directories.
+	(eshell-shuffle-files): Use `eshell-file-attributes', rather than
+	just `file-attributes'.
+	(eshell-mvcp-template): Bind `ange-cache', to improve performance
+	when reading remote directories.  This is an Eshell-specific
+	variable (not part of ange-ftp).
+	(eshell/ln): Bind `ange-cache'.
+	(eshell/du): Added some extra logic for determining when to use
+	Eshell's du (which is slow), and when to use the external version
+	(which may or may not exist).
+
+	* eshell/em-rebind.el (eshell-delchar-or-maybe-eof):
+	Call `eshell-interactive-process', rather than using
+	`get-buffer-process', since backgrounded processes don't count in
+	the context of this function's logic.
+
+	* eshell/esh-arg.el (eshell-parse-double-quote): Moved a call to
+	`forward-char', so that null strings are parsed correctly.
+
+2000-09-13  John Wiegley  <johnw@gnu.org>
+
+	* eshell/em-pred.el (eshell-pred-file-type)
+	(eshell-pred-file-links, eshell-pred-file-size):
+	Use `eshell-file-attributes'.  This is more correct over ange-ftp.
+
+	* eshell/em-glob.el (eshell-extended-glob): Bind `ange-cache', so
+	that remote file globbing is more efficient.
+
+	* eshell/em-ls.el (eshell-ls-dir): Use `expand-file-name' when
+	gathering the files and attributes within a directory.
+
+	* eshell/em-unix.el (eshell/cat): If any of the files passed on
+	the command line is a special file (not a regular file, directory
+	or symlink), always attempt to call the external version of cat.
+
+2000-09-13  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-mode.el (eshell-find-tag): Corrections to the
+	Eshell-friendly version of find-tag.
+
+2000-09-28  Dave Love  <fx@gnu.org>
+
+	* eshell/eshell.el (eshell) <defgroup>: Add :version.
+
+2000-09-02  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/esh-module.el (eval-when-compile): Don't lose if
+	esh-module.el's file name is truncated to DOS 8+3 limits.
+
+2000-08-30  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-mode.el (eshell-mode): Bound C-c M-d to toggle direct
+	sending to subprocesses.  Also, hook pre-command-hook if
+	`eshell-send-direct-to-subprocesses' is non-nil.
+	(eshell-send-direct-to-subprocesses): New config variable.  If t,
+	subprocess input is send immediately.
+	(eshell-toggle-direct-send): New function.
+	(eshell-self-insert-command): New function.
+	(eshell-intercept-commands): New function.
+	(eshell-send-input): If direct subprocess sending is enabled,
+	don't echo any input to the Eshell buffer.  Let the subprocess
+	handle that.  This requires "stty echo" in bash, for example.
+
+2000-08-28  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-var.el (pcomplete/eshell-mode/unset): Added
+	completion function for Eshell's implementation of `unset'.
+
+2000-08-28  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el (eshell-flatten-list): It's not too wise to
+	have a defsubst call itself.  Made `eshell-flatten-list' back into
+	a function again.
+
+	* eshell/em-smart.el (eshell-smart-redisplay): Added a safety
+	catch, in case re-centering point at bottom messes up the display.
+	This happens frequently in Emacs 21, due I believe to variable
+	line heights.
+
+	* eshell/esh-mode.el (eshell-find-tag): Require `etags', in order
+	to call `find-tag-interactive'.
+
+	* eshell/em-dirs.el (eshell/cd): Use buffered printing to display
+	the list of remember directories.
+
+2000-08-28  John Wiegley  <johnw@gnu.org>
+
+	* eshell/esh-util.el (eshell-flatten-list): Made this function
+	into a defsubst form.  It gets used very frequently, although
+	calls don't occur all that often.
+
+	* eshell/em-dirs.el (eshell/cd): Flatten the argument list before
+	examining it.
+
+	* eshell/esh-cmd.el (eshell-rewrite-while-command):
+	(eshell-rewrite-for-command): Use `eshell-copy-handles' instead of
+	`eshell-protect'.
+	(eshell-copy-handles): Created a new macro for duplicating the
+	current set of open handles.  This is needed by the looping
+	functions.
+	(eshell-do-eval): Fixed while and if, so that the eshell-test-body
+	is not incorrectly stomped on.
+
+	* eshell/em-cmpl.el (eshell-cmpl-use-paring): Mirror
+	declaration for pcomplete-use-paring.
+	(eshell-cmpl-initialize): Set pcomplete-use-paring based on the
+	value of eshell-cmpl-use-paring.
+	* pcomplete.el (pcomplete-use-paring): New config variable, to
+	indicate whether paring should be used.
+	(pcomplete-do-complete): If pcomplete-use-paring is t, pare out
+	completion alternatives that have already been used.
+
+	* eshell/esh-mode.el (eshell-repeat-argument): Added function,
+	bound to C-c C-y, which will repeat the previous N arguments
+	(based on prefix argument).
+	(eshell-mode): Bind C-c C-y to eshell-repeat-argument.
+
+	* eshell/esh-cmd.el (eshell/which): Don't kill the *Help* buffer
+	if there is no *Help* buffer.  This is for XEmacs, which renames
+	its help buffers uniquely.  TODO: Find out what the current buffer
+	name to delete is.
+
+	* eshell/esh-util.el (eshell-read-passwd-file): Only keep the
+	first entry that correlates to a passwd/group number.  Later
+	entries (used for group/user name aliasing to multiple IDs) are
+	ignored.
+
+	* eshell/em-xtra.el (eshell/expr):
+	* eshell/em-unix.el (eshell/du, eshell/cat, eshell/make)
+	(eshell-grep, eshell/diff, eshell/locate):
+	* eshell/em-dirs.el (eshell-dirs-substitute-cd): Flatten the
+	argument list, before passing it to the system command.
+
+	* eshell/esh-mode.el (eshell-find-tag): Added a special version of
+	`find-tag' for use at final position in Eshell buffers (which
+	otherwise triggers an error on Emacs 21).
+	(eshell-mode): Bind M-. to `eshell-find-tag' with the Eshell
+	buffer, if it is currently bound to `find-tag'.
+
+	* eshell/em-dirs.el (eshell/cd): cd commands that look up
+	directory parts (like "cd old new", or "cd =regexp"), are now case
+	sensitive on non-Windows/DOS platforms.
+
+	* eshell/esh-mode.el (eshell-parse-command-input): When a user
+	types RET after an open delimiter (like "), display a message
+	indicating that Eshell is waiting for the closing delimiter.
+
+	* eshell/esh-var.el (eshell/unset): Added a command for unsetting
+	environment variables.
+
+	* eshell/em-unix.el (eshell/diff): Added logic to fail more
+	gracefully if the user enters incorrect arguments.
+
+	* eshell/esh-mode.el (eshell-mode): Disable auto-fill-function in
+	Eshell buffers.
+
+	* eshell/esh-var.el (eshell-interpolate-variable):
+	* eshell/esh-mode.el (eshell-move-argument):
+	* eshell/em-unix.el (eshell-du-sum-directory):
+	* eshell/em-rebind.el (eshell-delchar-or-maybe-eof):
+	* eshell/em-ls.el (eshell-ls-decorated-name): Use /= instead of
+	(not (= ...)).
+
+	* eshell/em-unix.el (eshell-shuffle-files): Added use of `apply',
+	to ensure the `preserve' flag gets propagated when doing recursive
+	directory copies.
+
+2000-08-28  Stefan Monnier  <monnier@cs.yale.edu>
+
+	* eshell/em-hist.el (eshell-put-history, eshell-get-history):
+	Don't convert \n into \0177 in memory.
+	(eshell-read-history, eshell-write-history): Convert \n to \0177,
+	and back again, when reading and writing.
+
+2000-08-28  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/esh-util.el (eshell-processp): Added to relieve constant
+	testing of `fboundp' on `processp'.
+
+	* eshell/esh-proc.el (eshell/kill): Use eshell-processp.
+	(eshell/jobs): Don't call process-list if it is not bound.
+	(eshell-gather-process-output): Support systems where async
+	subprocesses aren't supported.
+	(eshell-scratch-buffer, eshell-last-sync-output-start): New
+	variables.
+
+	* eshell/esh-cmd.el (eshell-resume-eval): Handle the case when
+	eshell-do-eval returns t.
+	(eshell-do-pipelines-synchronously): New defmacro.
+	(eshell-execute-pipeline): Call it instead of eshell-do-pipelines
+	when async subprocesses aren't supported.
+	(eshell-do-eval): Use eshell-processp.  Don't throw eshell-defer
+	if async subprocesses aren't supported.
+	(eshell-resume-command): Don't assume STATUS is a string.
+
+	* eshell/em-unix.el (eshell/rm): Use eshell-processp.
+
+	* eshell/esh-io.el (eshell-virtual-targets): Doc fix.
+	(eshell-close-target, eshell-get-target): Use eshell-processp.
+	(eshell-print, eshell-error, eshell-errorn, eshell-printn): Doc
+	fix.
+	(eshell-get-target, eshell-create-handles): Doc fix.
+
+2000-08-28  Miles Bader  <miles@lsi.nec.co.jp>
+
+	* eshell/em-smart.el (eshell-smart-maybe-jump-to-end): Change the
+	criterion to include commands that output something, as long as it
+	leaves both the command and the end-of-buffer visible when the
+	command has exited.
+	(eshell-review-quick-commands): Adjust the help doc string
+	accordingly.
+
+2000-07-30  Gerd Moellmann  <gerd@gnu.org>
+
+	* eshell/esh-groups.el: Change custom :link file names
+	from `eshell.info' to `eshell'.
+
+2000-07-18  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/eshell.el (eshell): Replace links to eshell.info with
+	links to eshell, to avoid problems on systems where the manual is
+	installed as `eshell'.
+	* eshell/esh-cmd.el (eshell-cmd): Ditto.
+	* eshell/em-smart.el (eshell-smart): Ditto.
+	* eshell/em-banner.el (eshell-banner): Ditto.
+	* eshell/em-alias.el (eshell-alias, eshell-bad-command-tolerance): Ditto.
+
+	* eshell/em-unix.el (eshell-shuffle-files): Don't disable
+	same-file check in the MS-DOS version (it does support inodes).
+
+	* eshell/em-alias.el (eshell-maybe-replace-by-alias): Doc fix.
+
+	* eshell/eshell.el (eshell-directory-name):
+	Run default directory name through convert-standard-filename.
+
+2000-07-11  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* eshell/esh-module.el (toplevel): Reference
+	byte-compile-current-file only if it is bound.
+
+2000-06-26  Gerd Moellmann  <gerd@gnu.org>
+
+	* eshell/esh-module.el (toplevel): Load defgroup's differently;
+	patch from John.
+
+	* eshell/*.el: Change spelling of the Free Software Foundation.
+
+	* eshell/esh-toggle.el: Removed.
+
+	* Makefile.in (DONTCOMPILE): Add eshell/esh-group.el.
+
+2000-06-23  Stefan Monnier  <monnier@cs.yale.edu>
+
+	* eshell/esh-module.el: Require CL when compiling.
+
+2000-06-23  Gerd Moellmann  <gerd@gnu.org>
+
+	* Makefile.in (DONTCOMPILE): Add eshell/esh-maint.el.
+
+	* eshell/esh-cmd.el (eshell-rewrite-for-command): Use cdr and
+	cddr instead of cdddr.
+
+	* eshell/esh-util.el (eshell-sublist): Use eshell-copy-list
+	instead of copy-list.
+
+	* eshell/esh-mode.el (eshell-mode): Use eshell-copy-list instead
+	of copy-list.
+
+	* subdirs.el: Add eshell subdirectory.
+
+	* eshell: New subdirectory containing the Eshell package.
