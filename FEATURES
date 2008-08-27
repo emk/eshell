@@ -1,0 +1,69 @@
+Here are some of the fun things that Eshell can do, for those too
+impatient for manuals!
+
+- First off, Eshell should work anywhere that Emacs does.  Eshell uses
+  no external processes -- only Emacs Lisp functions.  So if
+  `directory-files' returns a list of filenames on your VAX, then
+  Eshell's implementation of ls should too.
+
+- Lisp functions can be called using either Lisp or Eshell syntax.
+  Take the `+' function, for example:
+
+    /tmp $ (+ 1 2)
+    3
+    /tmp $ + 1 2
+    3
+
+  In the first case, the Lisp expression is simply handed to the Lisp
+  interpretor.  In the second case, the arguments are parsed by
+  Eshell, and converted to numbers because they look like numbers.
+  The argument list is then passed to `+'.
+
+- Several things return lists as their result.  Globbing and command
+  interpolation are good examples.  This means you can pass these
+  lists to Lisp functions that can deal with lists.
+
+  For example, the `length' function, if passed a list, will return
+  the number of items in the list.  And since a globbing pattern
+  always returns a list, here is a way to tell how many files match a
+  glob:
+
+    /tmp $ length *.el
+
+  Finding out the same information on UNIX requires two process
+  invocations:
+
+    /tmp $ ls -1 *.el | wc -l
+
+  This version can also be used with Eshell, but it's more complex,
+  and more expensive.
+
+- Command interpolations result in lists as well.  Each element of the
+  list represents one line of the command's output.
+
+    /tmp $ length ${egrep johnw /etc/passwd}
+
+- To review all occurances of a regexp anywhere in the command outputs
+  of the current Eshell session, enter:
+
+    /tmp $ occur REGEXP
+
+- Instead of "find . -print | xargs grep REGEXP", you can use Eshell's
+  recursive globbing syntax, which is taken from zsh:
+
+    /tmp $ grep REGEXP **/*(.)    # grep all normal files
+
+  This command will also display the grep hits in a "*grep*" buffer,
+  allowing you to type C-x ` to visit the locations of the hits.  The
+  "(.)" at the end of the glob pattern is an argument predicate, which
+  constrains the resulting list to only those entries for which
+  `file-regular-p' returns true.
+
+- bash-style history references (!, C-r, C-p, etc).
+
+- Supports 4nt's history reference style of typing the beginning of a
+  command, and then hitting up arrow to see all the commands beginning
+  with that text.
+
+- There are a lot of other things, but I'm always so tired when I get
+  to this point.

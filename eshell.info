@@ -1,0 +1,410 @@
+This is eshell, produced by makeinfo version 4.0 from eshell.texi.
+
+START-INFO-DIR-ENTRY
+* Eshell: (eshell).	A command shell implemented in Emacs Lisp.
+END-INFO-DIR-ENTRY
+
+   Copyright (C) 1999-2000  Free Software Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided also
+that the section entitled "GNU General Public License" is included
+exactly as in the original, and provided that the entire resulting
+derived work is distributed under the terms of a permission notice
+identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public License"
+and this permission notice may be included in translations approved by
+the Free Software Foundation instead of in the original English.
+
+
+File: eshell,  Node: Top,  Next: What is Eshell?,  Prev: (dir),  Up: (dir)
+
+Eshell
+******
+
+   This manual documents Eshell, a shell-like command interpretor
+implemented entirely in Emacs Lisp.  It invokes no external processes
+beyond those requested by the user.  It is intended to be a functional
+replacement for command shells such as `bash', `zsh', `rc', `4dos';
+since Emacs itself is capable of handling most of the tasks
+accomplished by such tools.
+
+* Menu:
+
+* What is Eshell?::             A brief introduction to the Emacs Shell.
+* Bugs and ideas::
+
+
+File: eshell,  Node: What is Eshell?,  Next: Bugs and ideas,  Prev: Top,  Up: Top
+
+What is Eshell?
+***************
+
+   Eshell is a command shell written using Emacs Lisp.  All of what it
+does it uses Emacs' facilities to do.  This means Eshell is as portable
+as Emacs itself.  It also means that cooperation with other Lisp code is
+natural and seamless.
+
+   So what is a command shell?  To properly understand the role of a
+shell, it's necessary to visualize what a computer does for you.
+Basically, a computer is a tool; in order to use that tool, you must
+tell it what to do--or give it "commands".  These commands take many
+forms, such as clicking with a mouse on certain parts of the screen.
+But that is only one form of command input.
+
+   By far the most versatile way to express what you want the computer
+to do is using an abbreviated language, called script.  In script,
+instead of telling the computer, "list my files, please", we write just
+"list".  In fact, this command is so commonly used that we abbreviate
+it to "ls".  Typing `ls' in a command shell is a script way of telling
+the computer to list your files.  This is comparable to viewing the
+contents of a folder using a graphical display.
+
+   The real flexibility is apparent only when you realize that there are
+many, many ways to list your files.  Perhaps you want them sorted by
+name, or sorted by date, or in reverse order, or grouped by type.  Most
+graphical browsers have simple ways to express this.  But what about
+showing only a few files, or only files that meet a certain criteria?
+In very complex and specific situations, the request becomes too
+difficult to express with a mouse.  It is just these kinds of requests
+that are solvable using a command shell.
+
+   For example, what if you want to list every Word file on your hard
+drive, larger than 100 kilobytes in size, and which hasn't been looked
+at in over six months?  That is a good candidate list for deletion, when
+you go to clean up your hard drive.  But have you ever tried asking your
+computer for such a list?  There is no way to do it!  At least, not
+without using a command shell.
+
+   So the role of a command shell is to give you more control over what
+your computer does for you.  Not everyone needs this amount of control,
+and it does come at a cost: Learning the necessary script commands to
+express what you want done.  A complicated query, such as the example
+above, takes time to learn.  But if you find yourself using your
+computer frequently enough, it is more than worthwhile in the long run.
+Any tool you use often deserves your time in learning to master it.  (1)
+
+   As of Emacs 21, Eshell is part of the standard Emacs distribution.
+
+* Menu:
+
+* Contributors to Eshell::
+* Installation::
+
+   ---------- Footnotes ----------
+
+   (1) For the understandably curious, here is what that command looks
+like: But don't let it fool you; once you know what's going on, it's
+easier than it looks: `ls -lt **/*.doc(Lk+50aM+5)'.
+
+
+File: eshell,  Node: Contributors to Eshell,  Next: Installation,  Prev: What is Eshell?,  Up: What is Eshell?
+
+Contributors to Eshell
+======================
+
+   Contributions to Eshell are welcome.  I have limited time to work on
+this project, but I will gladly add any code you contribute to me to
+this package.
+
+   The following persons have made contributions to Eshell.
+
+   * Eli Zaretskii made it possible for Eshell to run without requiring
+     asynchronous subprocess support.  This is important for MS-DOS,
+     which does not have such support.
+
+   * Miles Bader contributed many fixes during the port to Emacs 21.
+
+   * Stefan Monnier fixed the things which bothered him, which of
+     course made things better for all.
+
+   * Gerd Moellmann also helped to contribute bug fixes during the
+     initial integration with Emacs 21.
+
+   * Alex Schroeder contributed code for interactively querying the user
+     before overwriting files.
+
+   * Sudish Joseph helped with some XEmacs compatibility issues.
+
+
+   Apart from these, a lot of people have sent suggestions, ideas,
+requests, bug reports and encouragement.  Thanks a lot!  Without you
+there would be no new releases of Eshell.
+
+
+File: eshell,  Node: Installation,  Prev: Contributors to Eshell,  Up: What is Eshell?
+
+Installation
+============
+
+   As mentioned above, Eshell comes preinstalled since Emacs 21.  If
+you're using Emacs 20.4 or later, or XEmacs 21, you can download the
+most recent version of Eshell from
+<http://www.gci-net.com/users/j/johnw/Emacs/eshell.tar.gz>.
+
+   If you are using Emacs 21, please skip this section.
+
+Short Form
+----------
+
+   Here's exactly what to do, with no explanation why:
+
+  1. `M-x load-file RET eshell-auto.el RET'
+
+  2. `ESC : (add-to-list 'load-path "<path where Eshell resides>") RET'
+
+  3. `ESC : (add-to-list 'load-path "<path where Pcomplete resides>")
+     RET'
+
+  4. `M-x eshell RET'
+
+     You should see a version banner displayed.
+
+  5. `ls RET'
+
+     Confirm that you see a file listing.
+
+  6. `eshell-test RET'
+
+     Confirm that everything runs correctly.  Use `M-x
+     eshell-report-bug' if not.
+
+  7. `cd ${dirname (locate-library "eshell-auto")} RET'
+
+  8. `find-file Makefile RET'
+
+  9. Edit the Makefile to reflect your site.
+
+ 10. `M-x eshell RET'
+
+ 11. `make install RET'
+
+ 12. `find-file $user-init-file RET'
+
+ 13. Add the following lines to your `.emacs' file:
+
+          (add-to-list 'load-path "<directory where you install Eshell>")
+          (load "eshell-auto")
+
+ 14. `M-x eshell RET'
+
+ 15. `customize-option #'eshell-modules-list RET'
+
+ 16. Select the extension modules you prefer.
+
+ 17. Restart Emacs!
+
+ 18. `M-x info RET m Eshell RET'
+
+     Read the manual and enjoy!
+
+Long Form
+---------
+
+  1. Before building and installing Eshell, it is important to test
+     that it will work properly on your system.  To do this, first load
+     `eshell-auto', which will define certain autoloads required to run
+     Eshell.  This can be done using the command `M-x load-file', and
+     then selecting the file `eshell-auto.el'.
+
+  2. In order for Emacs to find Eshell's files, the Eshell directory
+     must be added to the `load-path' variable.  This can be done
+     within Emacs by typing:
+
+          ESC : (add-to-list 'load-path "<path where Eshell resides>") RET
+          ESC : (add-to-list 'load-path "<path where Pcomplete resides>") RET
+
+  3. Start Eshell from the distributed sources, using default settings,
+     by typing `M-x eshell'.
+
+  4. Verify that Eshell is functional by typing `ls' followed by `RET'.
+     You should have already seen a version banner announcing the
+     version number of this release, followed by a prompt.
+
+  5. Run the test suite by typing `eshell-test' followed by `RET' in
+     the Eshell buffer.  It is important that Emacs be left alone while
+     the tests are running, since extraneous command input may cause
+     some of the tests to fail (they were never intended to run in the
+     background).  If all of the tests pass, Eshell should work just
+     fine on your system.  If any of the tests fail, please send e-mail
+     to the Eshell maintainer using the command `M-x eshell-report-bug'.
+
+  6. Edit the file `Makefile' in the directory containing the Eshell
+     sources to reflect the location of certain Emacs dircetories at
+     your site.  The only things you really have to change are the
+     definitions of `lispdir' and `infodir'.  The elisp files will be
+     copied to `lispdir', and the info file to `infodir'.
+
+  7. Type `make install' in the directory containing the Eshell sources.
+     This will byte-compile all of the `.el' files and copy both the
+     source and compiled versions to the directories specified in the
+     previous step.  It will also copy the info file, and add a
+     corresponding entry to your `dir' file---if `install-info' can be
+     found.
+
+     If you only want to create the compiled elisp files, but don't
+     want to install them, you can type just `make' instead.
+
+  8. Add the directory into which Eshell was installed to your
+     `load-path' variable.  This can be done by adding the following
+     line to your `.emacs' file:
+
+          (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/eshell")
+
+     The actual directory on your system may differ.
+
+  9. To install Eshell privately, edit your `.emacs' file; to install
+     Eshell site-wide, edit the file `site-start.el' in your
+     `site-lisp' directory (usually `/usr/local/share/emacs/site-lisp'
+     or something similar).  In either case enter the following line
+     into the appropriate file:
+
+          (load "eshell-auto")
+
+ 10. Restart Emacs.  After restarting, customize the variable
+     `eshell-modules-list'.  This variable selects which Eshell
+     extension modules you want to use.  You will find documentation on
+     each of those modules in the Info manual.
+
+
+   If you have TeX installed at your site, you can make a typeset manual
+from `eshell.texi'.
+
+  1. Run TeX by typing `texi2dvi eshell.texi'.
+
+  2. Convert the resulting device independent file `eshell.dvi' to a
+     form which your printer can output and print it.  If you have a
+     postscript printer there is a program, `dvi2ps', which does.  There
+     is also a program which comes together with TeX, `dvips', which
+     you can use.
+
+
+File: eshell,  Node: Bugs and ideas,  Prev: What is Eshell?,  Up: Top
+
+Bugs and ideas
+**************
+
+   If you find a bug or misfeature, don't hesitate to let me know!  Send
+email to `johnw@gnu.org'.  Feature requests should also be sent there.
+I prefer discussing one thing at a time.  If you find several unrelated
+bugs, please report them separately.
+
+   If you have ideas for improvements, or if you have written some
+extensions to this package, I would like to hear from you.  I hope you
+find this package useful!
+
+* Menu:
+
+* Known problems::
+
+
+File: eshell,  Node: Known problems,  Prev: Bugs and ideas,  Up: Bugs and ideas
+
+Known problems
+==============
+
+   Below is a partial list of currently known problems with Eshell
+version 2.3.2, which is the version distribution with Emacs 21.1.
+
+`for i in 1 2 3 { grep -q a b && *echo has it } | wc -l' fails
+     In fact, piping to a process from a looping construct doesn't work
+     in general.  If I change the call to `eshell-copy-handles' in
+     `eshell-rewrite-for-command' to use `eshell-protect', it seems to
+     work, but the output occurs after the prompt is displayed.  The
+     whole structured command thing is too complicated at present.
+
+Error with `bc' in `eshell-test'
+     On some XEmacs system, the subprocess interaction test fails
+     inexplicably, since `bc' works fine at the command prompt.
+
+`ls' in remote directories sometimes fails
+     For XEmacs users, using `ls' in a remote directory sometimes
+     fails.  The reason why has not yet been found.
+
+Eshell does not delete `*Help*' buffers in XEmacs 21.1.8+
+     In XEmacs 21.1.8, the `*Help*' buffer has been renamed such that
+     multiple instances of the `*Help*' buffer can exist.
+
+Pcomplete sometimes gets stuck
+     When `TAB', no completions appear, even though the directory has
+     them.  This behavior is rare.
+
+`grep python $<rpm -qa>' doesn't work, but using `*grep' does
+     This happens because the `grep' Lisp function returns immediately,
+     and then the asynchronous `grep' process expects to examine the
+     temporary file, which has since been deleted.
+
+Problem with C-r repeating text
+     If the text _before point_ reads "./run", and you type `C-r r u
+     n', it will repeat the line for every character typed.
+
+Backspace doesn't scroll back after continuing (in smart mode)
+     Hitting space during a process invocation, such as `make', will
+     cause it to track the bottom of the output; but backspace no longer
+     scrolls back.
+
+It's not possible to fully `unload-feature' Eshell
+
+Menu support was removed, but never put back
+
+Using C-p and C-n with rebind gets into a locked state
+     This happened a few times in Emacs 21, but has been unreproducable
+     since.
+
+If an interactive process is currently running, `M-!' doesn't work
+
+Use a timer instead of `sleep-for' when killing child processes
+
+Piping to a Lisp function is not supported
+     Make it so that the Lisp command on the right of the pipe is
+     repeatedly called with the input strings as arguments.  This will
+     require changing eshell-do-pipeline to handle non-process targets.
+
+Input redirection is not supported
+     See the entry above.
+
+Function and Variable Index
+***************************
+
+* Menu:
+Concept Index
+*************
+
+* Menu:
+
+* Author, how to reach:                  Bugs and ideas.
+* Authors:                               Contributors to Eshell.
+* Bugs, how to report them:              Bugs and ideas.
+* Bugs, known:                           Bugs and ideas.
+* Contributors:                          Contributors to Eshell.
+* Email to the author:                   Bugs and ideas.
+* FAQ:                                   Bugs and ideas.
+* Installation:                          Installation.
+* Known bugs:                            Bugs and ideas.
+* Problems, list of common:              Bugs and ideas.
+* Reporting bugs and ideas:              Bugs and ideas.
+* What is Eshell?:                       What is Eshell?.
+
+Key Index
+*********
+
+* Menu:
+
+
+Tag Table:
+Node: Top1109
+Node: What is Eshell?1668
+Ref: What is Eshell?-Footnote-14453
+Node: Contributors to Eshell4646
+Node: Installation5841
+Node: Bugs and ideas10969
+Node: Known problems11521
+
+End Tag Table
