@@ -1,5 +1,5 @@
 XTRA_ELFILES	= eshell-auto.el esh-groups.el auto-autoloads.el
-DISTCLEANFILES	= $(XTRA_ELFILES) $(XTRA_ELFILES:.el=.elc)
+DISTCLEANFILES	= $(XTRA_ELFILES) $(XTRA_ELFILES:.el=.elc) $(TESTS)
 EXTRA_DIST	= _pkg.el $(XTRA_ELFILES) autogen.sh FEATURES esh-maint.el
 BUILT_SOURCES	= eshell-auto.el esh-groups.el
 CLEANFILES	= TAGS $(BUILT_SOURCES)
