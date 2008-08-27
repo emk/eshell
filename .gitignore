@@ -1,0 +1,6 @@
+*.elc
+*~
+/auto-autoloads.el
+/esh-groups.el
+/eshell-auto.el
+/eshell.info
