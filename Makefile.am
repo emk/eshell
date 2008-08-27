@@ -1,12 +1,11 @@
-DISTCLEANFILES	= $(ELFILES:.el=.elc) \
-		  eshell-auto.el  esh-groups.el  auto-autoloads.el \
-		  eshell-auto.elc esh-groups.elc auto-autoloads.elc
-EXTRA_DIST      = _pkg.el
-BUILT_SOURCES   = eshell-auto.el
-CLEANFILES      = TAGS
+XTRA_ELFILES	= eshell-auto.el esh-groups.el auto-autoloads.el
+DISTCLEANFILES	= $(XTRA_ELFILES) $(XTRA_ELFILES:.el=.elc)
+EXTRA_DIST	= _pkg.el $(XTRA_ELFILES) autogen.sh FEATURES esh-maint.el
+BUILT_SOURCES	= eshell-auto.el esh-groups.el
+CLEANFILES	= TAGS $(BUILT_SOURCES)
 info_TEXINFOS	= eshell.texi
 
-lisp_LISP =		\
+dist_lisp_LISP =	\
 	eshell.el	\
 	esh-arg.el	\
 	esh-cmd.el	\
@@ -41,18 +40,22 @@ TAGS: $(dist_lisp_LISP)
 	@etags $(dist_lisp_LISP)
 	@echo TAGS rebuilt.
 
-eshell-auto.el: $(ELFILES) Makefile
-	echo ";;; DO NOT MODIFY THIS FILE" > eshell-auto.el
+eshell-auto.el: $(ELFILES)
+	echo ";;; DO NOT MODIFY THIS FILE" > $(top_builddir)/eshell-auto.el
 	echo "(if (featurep 'eshell-auto) (error \"Already loaded\"))" \
-		>> eshell-auto.el
-	$(EMACS) -batch -L . -l esh-maint.el \
-		-f eshell-generate-autoloads ./eshell-auto.el .
-	echo "(provide 'eshell-auto)" >> eshell-auto.el
-	ln -f eshell-auto.el auto-autoloads.el
+		>> $(top_builddir)/eshell-auto.el
+	$(EMACS) -batch -L $(srcdir) -l esh-maint.el \
+		-f eshell-generate-autoloads $(srcdir)/eshell-auto.el $(srcdir)
+	echo "(provide 'eshell-auto)" >> $(top_builddir)/eshell-auto.el
+	ln -f $(top_builddir)/eshell-auto.el $(top_builddir)/auto-autoloads.el
 
-lisp_TESTS = eshell-test.el
+esh-groups.el: $(ELFILES)
+	$(EMACS) -batch -L $(srcdir) -l esh-maint.el -f batch-byte-compile \
+		$(srcdir)/esh-module.el
 
-eshell-test.el:
+TESTS = eshell-test
+
+eshell-test:
 	echo "$(EMACS) -batch -L . -l esh-test.el --eval '(eshell-test)'" > $@
 	chmod u+x $@
 

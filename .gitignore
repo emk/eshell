@@ -1,5 +1,6 @@
 *.elc
 *~
+*.tar.*
 /Makefile
 /Makefile.in
 /aclocal.m4
@@ -13,6 +14,7 @@
 /elisp-comp
 /esh-groups.el
 /eshell-auto.el
+/eshell-test
 /eshell.info
 /install-sh
 /missing
