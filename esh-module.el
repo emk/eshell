@@ -35,10 +35,59 @@ customizing the variable `eshell-modules-list'."
   :tag "Extension modules"
   :group 'eshell)
 
+(defun eshell-load-defgroups (&optional directory)
+  "Load `defgroup' statements from Eshell's module files."
+  (with-current-buffer
+      (find-file-noselect (expand-file-name "esh-groups.el" directory))
+    (erase-buffer)
+    (insert ";;; do not modify this file; it is auto-generated\n\n")
+    (let ((files (directory-files (or directory
+				      (car command-line-args-left))
+				  nil "\\`em-.*\\.el\\'")))
+      (while files
+	(message "Loading defgroup from `%s'" (car files))
+	(let (defgroup)
+	  (catch 'handled
+	    (with-current-buffer (find-file-noselect (car files))
+	      (goto-char (point-min))
+	      (while t
+		(forward-sexp)
+		(if (eobp) (throw 'handled t))
+		(backward-sexp)
+		(let ((begin (point))
+		      (defg (looking-at "(defgroup")))
+		  (forward-sexp)
+		  (if defg
+		      (setq defgroup (buffer-substring begin (point))))))))
+	  (if defgroup
+	      (insert defgroup "\n\n")))
+	(setq files (cdr files))))
+    (save-buffer)))
+
 ;; load the defgroup's for the standard extension modules, so that
 ;; documentation can be provided when the user customize's
 ;; `eshell-modules-list'.
-(load "esh-groups" t)
+(eval-when-compile
+  (when (and (boundp 'byte-compile-current-file)
+	     byte-compile-current-file
+	     (or
+	      (equal (file-name-nondirectory byte-compile-current-file)
+		     "esh-module.el")
+	      ;; When eshell file names are expanded from a wildcard
+	      ;; or by reading the Eshell directory, e.g. when they
+	      ;; say "make recompile" in the lisp directory, Emacs on
+	      ;; MS-DOS sees a truncated name "esh-modu.el" instead of
+	      ;; "esh-module.el".
+	      (and (fboundp 'msdos-long-file-names)
+		   (null (msdos-long-file-names))
+		   (equal (file-name-nondirectory byte-compile-current-file)
+			  "esh-modu.el"))))
+    (let* ((directory (file-name-directory byte-compile-current-file))
+	   (elc-file (expand-file-name "esh-groups.elc" directory)))
+      (eshell-load-defgroups directory)
+      (if (file-exists-p elc-file) (delete-file elc-file)))))
+
+(load "esh-groups" t t)
 
 ;;; User Variables:
 
