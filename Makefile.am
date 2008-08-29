@@ -45,7 +45,8 @@ eshell-auto.el: $(ELFILES)
 	echo "(if (featurep 'eshell-auto) (error \"Already loaded\"))" \
 		>> $(top_builddir)/eshell-auto.el
 	$(EMACS) -batch -L $(srcdir) -l esh-maint.el \
-		-f eshell-generate-autoloads $(srcdir)/eshell-auto.el $(srcdir)
+		-f eshell-generate-autoloads \
+		$(top_builddir)/eshell-auto.el $(srcdir)
 	echo "(provide 'eshell-auto)" >> $(top_builddir)/eshell-auto.el
 	ln -f $(top_builddir)/eshell-auto.el $(top_builddir)/auto-autoloads.el
 
