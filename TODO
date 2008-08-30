@@ -1,0 +1,48 @@
+ESHELL  -*- mode: org; fill-column: 78 -*-
+
+#+STARTUP: overview
+#+ARCHIVE: TODO-OLD::
+#+SEQ_TODO: TODO(@) STARTED(@) WAITING(@) DELEGATED(@) | DONE(@) DEFERRED(@) CANCELLED(@) WONTFIX(@) WORKSFORME(@) INVALID(@) DUPLICATE(@) NOTE
+#+TAGS: FEATURE(f) DOCS(d) WEBSITE(w) BUILD(b)
+#+CATEGORY: Eshell
+
+* TODO [#B] The following for loop does not print what's expected
+  :SCRIPT:
+for i in ~/src/alpha beta code { echo $i }
+  :END:
+  :PROPERTIES:
+  :UUID: 808A1ECF-C719-427A-9F4F-2F26D5711EB4
+  :END:
+  [2008-08-30 Sat]
+* TODO [#B] Examine the patch that Lennart Borgman sent in for eshell/which
+  :PROPERTIES:
+  :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
+  :UUID: A68EB942-7D95-4FC3-B59A-9B8C3C11C195
+  :Attachments: borgman.patch
+  :END:
+  [2008-08-11 Mon]
+* TODO [#B] eshell/which use the same locating behavior as command lookup
+  :PROPERTIES:
+  :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
+  :UUID: 46DEC364-AFA4-41EB-8E13-C0E1C75A918F
+  :END:
+  [2008-08-11 Mon]
+* TODO [#B] Apply the patch from David Hanson to fix piping behavior
+  - Note taken on [2008-08-13 Wed 14:21] \\
+    David Hansen <david.hansen@gmx.net> writes:
+    > Try the attached patch.  It
+    > 
+    > * Starts subprocesses in a (eshell) pipeline using a pipe and not a TTY
+    >   (this should also give some performance boost).
+    > 
+    > * Appends "-1" to eshell/ls if ls is called in a pipeline.
+    > 
+    > At the time it's feature freeze for Emacs so it will probably take some
+    > time to make it in there.  Cc: anyways, maybe some old timer can approve
+    > the two lines.
+  :PROPERTIES:
+  :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
+  :UUID: 297E6F63-89D3-4795-8AAD-0CA284418B9A
+  :Attachments: piping-fix.patch
+  :END:
+  [2008-08-13 Wed]
