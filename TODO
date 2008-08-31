@@ -6,6 +6,30 @@ ESHELL  -*- mode: org; fill-column: 78 -*-
 #+TAGS: FEATURE(f) DOCS(d) WEBSITE(w) BUILD(b)
 #+CATEGORY: Eshell
 
+* TODO [#B] Eshell: When outputting to a pipe, ls should add the -1 flag
+  SCHEDULED: <2008-08-31 Sun>
+  [[message://48A06EE0.1040702@gmail.com]["Fwd: Re: Optimal emacs shell for coding" from "Lennart Borgman (gmail)" <lennart.borgman@gmail.com>]]
+  :OUTPUT:
+Welcome to the Emacs shell
+~/web/emacs $ which grep
+eshell/grep is a compiled Lisp function in `em-unix.el'
+~/web/emacs $ ls | grep lin
+elisp_link_report.el                        modernization.html
+elisp_link_report.el~
+modernization_html_mail.html
+elisp_link_report.html
+modernization_meta_key.html
+elisp_make_link.html                        ms_keyboard
+emacs_installing_packages.html              wrap-url2.html.gz
+emacs_manual_problem.html                   xah_emacs_linkify.el
+emacs_n_unicode.html                        xah_emacs_linkify.el~
+~/web/emacs $
+  :END:
+  :PROPERTIES:
+  :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
+  :UUID: 0AE28D37-508C-4FB0-A97C-ACFCD7FCD2DF
+  :END:
+  [2008-08-11 Mon]
 * TODO [#B] The following for loop does not print what's expected
   :SCRIPT:
 for i in ~/src/alpha beta code { echo $i }
@@ -31,12 +55,12 @@ for i in ~/src/alpha beta code { echo $i }
   - Note taken on [2008-08-13 Wed 14:21] \\
     David Hansen <david.hansen@gmx.net> writes:
     > Try the attached patch.  It
-    > 
+    >
     > * Starts subprocesses in a (eshell) pipeline using a pipe and not a TTY
     >   (this should also give some performance boost).
-    > 
+    >
     > * Appends "-1" to eshell/ls if ls is called in a pipeline.
-    > 
+    >
     > At the time it's feature freeze for Emacs so it will probably take some
     > time to make it in there.  Cc: anyways, maybe some old timer can approve
     > the two lines.
