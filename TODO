@@ -7,7 +7,6 @@ ESHELL  -*- mode: org; fill-column: 78 -*-
 #+CATEGORY: Eshell
 
 * TODO [#B] Eshell: When outputting to a pipe, ls should add the -1 flag
-  SCHEDULED: <2008-08-31 Sun>
   [[message://48A06EE0.1040702@gmail.com]["Fwd: Re: Optimal emacs shell for coding" from "Lennart Borgman (gmail)" <lennart.borgman@gmail.com>]]
   :OUTPUT:
 Welcome to the Emacs shell
@@ -27,7 +26,7 @@ emacs_n_unicode.html                        xah_emacs_linkify.el~
   :END:
   :PROPERTIES:
   :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
-  :UUID: 0AE28D37-508C-4FB0-A97C-ACFCD7FCD2DF
+  :ID: 0AE28D37-508C-4FB0-A97C-ACFCD7FCD2DF
   :END:
   [2008-08-11 Mon]
 * TODO [#B] The following for loop does not print what's expected
@@ -35,20 +34,20 @@ emacs_n_unicode.html                        xah_emacs_linkify.el~
 for i in ~/src/alpha beta code { echo $i }
   :END:
   :PROPERTIES:
-  :UUID: 808A1ECF-C719-427A-9F4F-2F26D5711EB4
+  :ID: 808A1ECF-C719-427A-9F4F-2F26D5711EB4
   :END:
   [2008-08-30 Sat]
 * TODO [#B] Examine the patch that Lennart Borgman sent in for eshell/which
   :PROPERTIES:
   :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
-  :UUID: A68EB942-7D95-4FC3-B59A-9B8C3C11C195
+  :ID: A68EB942-7D95-4FC3-B59A-9B8C3C11C195
   :Attachments: borgman.patch
   :END:
   [2008-08-11 Mon]
 * TODO [#B] eshell/which use the same locating behavior as command lookup
   :PROPERTIES:
   :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
-  :UUID: 46DEC364-AFA4-41EB-8E13-C0E1C75A918F
+  :ID: 46DEC364-AFA4-41EB-8E13-C0E1C75A918F
   :END:
   [2008-08-11 Mon]
 * TODO [#B] Apply the patch from David Hanson to fix piping behavior
@@ -66,7 +65,7 @@ for i in ~/src/alpha beta code { echo $i }
     > the two lines.
   :PROPERTIES:
   :Submitter: Lennart Borgman <lennart.borgman@gmail.com>
-  :UUID: 297E6F63-89D3-4795-8AAD-0CA284418B9A
+  :ID: 297E6F63-89D3-4795-8AAD-0CA284418B9A
   :Attachments: piping-fix.patch
   :END:
   [2008-08-13 Wed]
