@@ -266,7 +266,7 @@ This is used by `eshell-watch-for-password-prompt'."
 	  (map-char-table
 	   (function
 	    (lambda (key val)
-	      (and (char-valid-p key)
+	      (and (characterp key)
 		   (>= (char-int key) 256)
 		   (/= (char-syntax key) ?w)
 		   (modify-syntax-entry key "_   "
