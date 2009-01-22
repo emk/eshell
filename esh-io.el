@@ -1,7 +1,7 @@
 ;;; esh-io.el --- I/O management
 
 ;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-;;   2008  Free Software Foundation, Inc.
+;;   2008, 2009  Free Software Foundation, Inc.
 
 ;; Author: John Wiegley <johnw@gnu.org>
 
@@ -57,7 +57,9 @@
 
 (provide 'esh-io)
 
-(eval-when-compile (require 'eshell))
+(eval-when-compile
+  (require 'cl)
+  (require 'eshell))
 
 (defgroup eshell-io nil
   "Eshell's I/O management code provides a scheme for treating many

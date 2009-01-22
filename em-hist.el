@@ -1,7 +1,7 @@
 ;;; em-hist.el --- history list management
 
 ;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-;;   2008  Free Software Foundation, Inc.
+;;   2008, 2009  Free Software Foundation, Inc.
 
 ;; Author: John Wiegley <johnw@gnu.org>
 
@@ -55,6 +55,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'cl))
+
 (require 'ring)
 (require 'esh-opt)
 (require 'em-pred)
@@ -101,7 +104,7 @@ This mirrors the optional behavior of bash."
   :type 'boolean
   :group 'eshell-hist)
 
-(defcustom eshell-save-history-on-exit 'ask
+(defcustom eshell-save-history-on-exit t
   "*Determine if history should be automatically saved.
 History is always preserved after sanely exiting an Eshell buffer.
 However, when Emacs is being shut down, this variable determines
